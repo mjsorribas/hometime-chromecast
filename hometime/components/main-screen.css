@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/hometime/assets/font/OpenSans-Light.ttf) format('ttf');
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: normal;
+    src: url(/hometime/assets/font/OpenSans-Regular.ttf) format('ttf');
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 800;
+    src: url(/hometime/assets/font/OpenSans-Semibold.ttf) format('ttf');
+}
+html /deep/ .w-100 {
+    width: 100%;
+}
+html /deep/ .h-100 {
+    height: 100%;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.clearfix {
+    clear: both;
+}
+core-scaffold {
+    font-family: 'Open Sans', sans-serif;
+}
+/* menu bar of the left panel */
+
+core-toolbar {
+    background-color: #F57C00;
+}
+/* content of the left panel */
+/* title bar of the right panel */
+
+.font-800 {
+    font-weight: 800;
+}
+core-scaffold::shadow core-toolbar {
+    background-color: #FF9800;
+    background-image: url(../assets/img/background.jpg);
+    background-size: cover;
+    background-position: center center;
+}
+/* content of the right panel */
+
+.menu-title {
+    color: #FFE0B2;
+}
+.menu /deep/ core-icon {
+    fill: #ccc;
+}
+.menu core-item {
+    padding-left: 10px;
+    cursor: pointer;
+    color: #666;
+}
+.menu core-item.core-selected {
+    background-color: #EEE;
+    border-left: 2px solid #FB8C00;
+}
+my-menu-button /deep/ #dropdown {
+    max-height: 100px;
+    height: auto !important;
+    overflow: hidden !important;
+    top: 0;
+    bottom: auto !important;
+    box-shadow: 0 0 5px #5C5C5C;
+}
+/* list container */
+
+.list-container {
+    padding: 20px;
+}
+video-item {
+    display: block;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+video-item::shadow .video-item {
+    border-radius: 4px;
+}
+video-item::shadow .video-item .poster img {
+    border-radius: 4px 0 0 4px;
+}

@@ -1,0 +1,219 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<!-- <link rel="import" href="../bower_components/font-roboto/roboto.html"> -->
+<!-- import components -->
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-selector/core-selector.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-icons/av-icons.html">
+<link rel="import" href="../bower_components/core-icons/hardware-icons.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/list-cascade.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-drawer-panel/core-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+
+
+<!-- my components -->
+<link rel="import" href="../components/video-item.html">
+<link rel="import" href="../components/my-menu-button.html">
+<link rel="import" href="../components/video-player.html">
+
+
+<polymer-element name="main-screen" attributes="menuTitle appName">
+
+    <template id="mainScreen">
+
+        <link rel="stylesheet" href="main-screen.css">
+
+        <!-- mode waterfall-tall will show large header -->
+        <core-ajax id="data_hometime" auto url="../ajax/hometime.json" response="{{data}}" handleAs="json"></core-ajax>
+
+        <core-scaffold mode="{{modes[currentMode]}}" responsiveWidth="600px">
+
+            <!-- leftbar -->
+            <core-header-panel navigation flex>
+                <core-toolbar>
+                    <span flex class="menu-title">{{menuTitle}}</span>
+                </core-toolbar>
+
+                <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{selectMenu}}">
+                    <template repeat="{{data.playlists}}">
+                        <core-item label="{{label}}" icon="{{icon}}"></core-item>
+                    </template>
+                </core-selector>
+
+                <!-- <core-selector class="menu">
+                    <core-item label="demo" icon="cloud-queue"></core-item>
+                    <core-item label="Account" icon="account-circle"></core-item>
+                </core-selector> -->
+            </core-header-panel>
+
+
+            <!-- toolbar -->
+            <template if="{{currentMode}}">
+                <core-icon-button tool on-tap="{{gotoList}}" icon="arrow-back"></core-icon-button>
+            </template>
+            <div flex tool class="font-800">{{appName}}</div>
+            
+
+            <!-- change mode menu -->
+            <my-menu-button tool icon="more-vert" selected="{{currentMode}}" valign="top" halign="right">
+                <paper-item icon="list" label="Playlish"></paper-item>
+                <paper-item icon="settings-input-antenna" label="Playing"></paper-item>
+            </my-menu-button>
+
+            <!-- content -->
+            <div fit class="content">
+                <core-animated-pages selected="{{currentMode}}" transitions="slide-from-right" style="min-height: 100%;">
+
+                    <!-- Mode: listing videos -->
+                    <section layout vertical style="background-color: #eee;">
+
+                        <div flex>
+
+                            <!-- videos data url -->
+                            <template id="ajax_container" repeat="{{p, index in data.playlists}}">
+                                <core-ajax class="my-ajax" url="{{p.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
+                            </template>
+
+                            <core-animated-pages selected="{{currentList}}" transitions="list-cascade">
+
+
+                                <!-- video list -->
+                                <template id="lister" is="auto-binding" bind="{{playlists}}" repeat="{{videos, index in playlists}}">
+
+                                    <section layout vertical class="list-container">
+
+                                        <div flex slide-up list-cascade>
+
+                                            <template repeat="{{ v in videos }}">
+
+                                                <video-item video="{{v}}" queues="{{queues}}" mode="{{currentMode}}"></video-item>
+
+                                            </template>
+
+                                        </div>
+
+                                    </section>
+
+                                </template>
+
+                            </core-animated-pages>
+
+                        </div>
+                    </section>
+                    <!-- end video listing -->
+
+                    <!-- Mode: Video player -->
+                    <section style="background-color: #333;">
+                        <video-player queues="{{queues}}"></video-player>
+                    </section>
+                    <!-- #end video player -->
+
+
+
+                </core-animated-pages>
+            </div>
+
+        </core-scaffold>
+    </template>
+
+    <script>
+    Polymer("main-screen", {
+
+        modes: ["waterfall-tall", "seamed"],
+
+        currentMode: 0,
+
+        currentCategory: 0,
+
+        currentList: 0,
+
+        allVideos: [],
+
+        // playing list:
+        queues: [],
+
+        totalResponse: 0,
+
+        ready: function() {
+
+            var self = this;
+
+            this.lister = this.$.lister;
+
+            // get playing data from HTML5 localStorage
+            if (typeof(Storage) !== "undefined") {
+
+                var retriveData = JSON.parse(localStorage.getItem('hometimeQueues'));
+
+                if (retriveData != null) {
+
+                    self.queues = retriveData;
+                }
+            }
+
+            this.parse = function(e) {
+
+                self.totalResponse += 1;
+
+                if (self.totalResponse == self.data.playlists.length) {
+
+                    self.bindVideos();
+
+                };
+
+            };
+
+            this.bindVideos = function() {
+
+                self.lister.model = {
+
+                    playlists: self.allVideos
+
+                }
+
+            };
+
+            this.log = function(e) {
+
+                console.log(e.detail);
+            };
+
+            this.selectMenu = function(e) {
+
+                if (e.detail.isSelected && self.currentMode == 1) {
+
+                    self.currentMode = 0;
+                };
+            };
+
+
+            // save playing list to HTML5 localStorage, no lost after close browser
+            var savePlayingData = function() {
+
+                localStorage.setItem('hometimeQueues', JSON.stringify(self.queues));
+
+                return null;
+            }
+
+            window.onclose = savePlayingData;
+
+            window.onbeforeunload = savePlayingData;
+        },
+
+        gotoList: function() {
+            this.currentMode = 0;
+        }
+    });
+    </script>
+
+</polymer-element>

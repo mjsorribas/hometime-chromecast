@@ -1,0 +1,24 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+
+<polymer-element name="my-menu-button" extends="paper-menu-button" attributes="selected">
+    <template>
+        <shadow></shadow>
+    </template>
+    <script>
+    Polymer('my-menu-button', {
+
+        selected: 0,
+
+        observe: {
+            '$.menu.selected': 'menuSelectedChanged'
+        },
+
+        menuSelectedChanged: function(oldValue, newValue) {
+
+            this.selected = newValue;
+        }
+    });
+    </script>
+</polymer-element>

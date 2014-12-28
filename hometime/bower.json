@@ -1,0 +1,22 @@
+{
+  "name": "demo-polymer",
+  "version": "0.0.0",
+  "authors": [
+    "Toan Vnaking <vnaking@gmail.com>"
+  ],
+  "description": "my fist polymer app",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.4.2",
+    "webcomponentsjs": "~0.5.2",
+    "google-castable-video": "GoogleWebComponents/google-castable-video#~0.1.0"
+  }
+}

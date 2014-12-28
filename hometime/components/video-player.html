@@ -1,0 +1,274 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-castable-video/google-castable-video.html">
+<link rel="import" href="../components/video-player-scripts.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
+<polymer-element name="video-player" attributes="queues" noscript>
+    <template>
+        <style type="text/css">
+        .video-player-wrapper {
+            background-color: #000;
+            overflow: hidden;
+        }
+        paper-slider::shadow #sliderBar::shadow #activeProgress {
+            background-color: #FB8C00;
+        }
+        paper-slider::shadow #sliderKnobInner {
+            background-color: #FB8C00;
+        }
+        core-item[icon="settings-remote"]::shadow core-icon {
+            color: #FB8C00;
+        }
+        .player-wrapper {
+            position: relative;
+            margin: 0 auto;
+            max-width: 600px;
+            margin-bottom: -5px;
+        }
+        .mask-control {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            top: -5px;
+        }
+        .mask-control /deep/ core-icon {
+            fill: #FF9500;
+        }
+        #html5video,
+        .progress-block,
+        #progress {
+            width: 100%;
+        }
+        .control-icon,
+        .volume-slider,
+        .progress-block {
+            position: absolute;
+        }
+        .control-icon {
+            top: 50%;
+        }
+        .icon-play {
+            left: 50%;
+            margin-left: -2em;
+            margin-top: -2em;
+        }
+        .icon-play,
+        .icon-play svg {
+            width: 4em;
+            height: 4em;
+        }
+        .icon-cast {
+            top: 10px;
+            right: 10px;
+        }
+        .icon-next,
+        .icon-next svg,
+        .icon-prev,
+        .icon-prev svg {
+            width: 2em;
+            height: 2em;
+        }
+        .icon-volume {
+            top: 10px;
+            left: 10px;
+        }
+        .volume-slider {
+            top: 6px;
+            left: 30px;
+            opacity: 0;
+            width: 0px;
+            -webkit-transition: width .2s ease-in-out;
+            -moz-transition: width .2s ease-in-out;
+            -ms-transition: width .2s ease-in-out;
+            -o-transition: width .2s ease-in-out;
+            transition: width .2s ease-in-out;
+        }
+        .volume-slider.show,
+        .volume-slider:hover,
+        .volume-slider:focus {
+            opacity: 1;
+            width: 200px;
+            -webkit-transition: width .2s ease-in-out;
+            -moz-transition: width .2s ease-in-out;
+            -ms-transition: width .2s ease-in-out;
+            -o-transition: width .2s ease-in-out;
+            transition: width .2s ease-in-out;
+        }
+        .progress-block {
+            bottom: 0;
+            text-align: center;
+        }
+        .mask-control {
+            color: #fff;
+            opacity: 0;
+            -webkit-transition: opacity .5s ease-in-out;
+            -moz-transition: opacity .5s ease-in-out;
+            -ms-transition: opacity .5s ease-in-out;
+            -o-transition: opacity .5s ease-in-out;
+            transition: opacity .5s ease-in-out;
+        }
+        .pausing.mask-control {
+            opacity: .7;
+            -webkit-transition: opacity .5s ease-in-out;
+            -moz-transition: opacity .5s ease-in-out;
+            -ms-transition: opacity .5s ease-in-out;
+            -o-transition: opacity .5s ease-in-out;
+            transition: opacity .5s ease-in-out;
+        }
+        .playing.mask-control:hover {
+            opacity: .7;
+            -webkit-transition: opacity .5s ease-in-out;
+            -moz-transition: opacity .5s ease-in-out;
+            -ms-transition: opacity .5s ease-in-out;
+            -o-transition: opacity .5s ease-in-out;
+            transition: opacity .5s ease-in-out;
+        }
+        .playlist-wrapper {
+            color: #eee;
+        }
+        .playlist-control {
+            padding: 10px;
+            background-color: #333;
+            width: 100%;
+        }
+        .playlist {
+            background-color: #222;
+            padding: 10px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .a-video {
+            width: 100%;
+            border-bottom: 1px solid #282828;
+        }
+        .a-video .name {
+            padding-top: 5px;
+        }
+        .a-video .thumbnail {
+            padding-right: 10px;
+        }
+        .a-video .thumbnail,
+        .a-video .thumbnail img {
+            width: 70px;
+        }
+        .a-video .remove,
+        .a-video .play-this {
+            width: 40px;
+        }
+        .a-video .remove /deep/ core-icon,
+        .a-video .play-this /deep/ core-icon {
+            fill: #eee;
+        }
+        .a-video.active {
+            background-color: #171717;
+        }
+        .dialog {
+            position: fixed;
+            width: 50%;
+            text-align: center;
+        }
+        .removed {
+            -webkit-animation: disapear .5s;
+            -webkit-animation-fill-mode: forwards;
+            animation: disapear .5s;
+            animation-fill-mode: forwards;
+        }
+        @-webkit-keyframes disapear {
+            50% {
+                -webkit-transform: translateX(-5%);
+                transform: translateX(-5%);
+            }
+            100% {
+                -webkit-transform: translateX(200%);
+                transform: translateX(200%);
+            }
+        }
+        @keyframes disapear {
+            50% {
+                -webkit-transform: translateX(-5%);
+                transform: translateX(-5%);
+            }
+            100% {
+                -webkit-transform: translateX(200%);
+                transform: translateX(200%);
+            }
+        }
+        </style>
+        <div vertical layout fit class="video-player-wrapper">
+            <!-- google cast player -->
+            <div class="player-wrapper">
+                <template if="{{queues.length}}">
+                    <video id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500">
+                        <source src="/hometime/videos/{{queues[nowPlayingIndex].videoId}}" type="video/mp4"></source>
+                    </video>
+                </template>
+                <template if="{{!queues.length}}">
+                    <video width="500" poster="/hometime/assets/img/video-04.jpg">
+                    </video>
+                </template>
+                <div class="mask-control {{playStateClasses[currentplayState]}}">
+                    <core-icon id="play" class="control-icon icon-play" icon="{{playStateIcons[currentplayState]}}"></core-icon>
+
+                    <core-icon id="cast" class="control-icon icon-cast" icon="{{castStateIcons[currentCastState]}}"></core-icon>
+                    <core-icon id="volume_icon" class="control-icon icon-volume" icon="{{volumeStateIcons[1]}}"></core-icon>
+                    <paper-slider id="volumer" class="volume-slider" min="0" max="1" value="0.8" step="0.01"></paper-slider>
+
+                    <table class="progress-block">
+                        <tr>
+                            <td width="40">
+                                {{currentSTimeFormated}}
+                            </td>
+                            <td>
+                                <paper-slider id="progress" min="0" max="100" value="0"></paper-slider>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- playlist -->
+            <div flex vertical layout class="playlist-wrapper">
+
+                <table class="playlist-control">
+                    <tr>
+                        <td colspan="2">Now playing</td>
+                        <td width="80">
+                            <core-icon-button id="prev" class="icon-prev" icon="av:skip-previous"></core-icon-button>
+                            <core-icon-button id="next" class="icon-next" icon="av:skip-next"></core-icon-button>
+                        </td>
+                    </tr>
+                </table>
+
+                <div flex class="playlist">
+                    <template repeat="{{video, index in queues}}">
+                        <table class="a-video">
+                            <tr>
+                                <td class="thumbnail">
+                                    <img src="{{video.poster}}">
+                                </td>
+                                <td class="name">
+                                    {{video.name}}
+                                </td>
+                                <td class="play-this">
+                                    <paper-fab index="{{index}}" on-tap="{{playThis}}" icon="av:play-arrow" mini="true"></paper-fab>
+                                </td>
+                                <td class="remove">
+                                    <core-icon-button index="{{index}}" on-tap="{{removeItem}}" icon="clear"></core-icon-button>
+                                </td>
+                            </tr>
+                        </table>
+                    </template>
+                </div>
+            </div>
+            <!-- modal -->
+            <paper-action-dialog class="dialog" id="dialog_nocast" backdrop autoCloseDisabled layered="false" transition="core-transition-center">
+                <p>
+                    No Cast Devices Found!
+                </p>
+                <paper-button affirmative autofocus>Close</paper-button>
+            </paper-action-dialog>
+        </div>
+    </template>
+</polymer-element>

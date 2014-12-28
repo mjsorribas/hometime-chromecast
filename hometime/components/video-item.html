@@ -1,0 +1,79 @@
+<link rel="import" href="../bower_components/core-transition/core-transition-css.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/core-tooltip/core-tooltip.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html" >
+<link rel="import" href="../components/video-item-script.html">
+<polymer-element name="video-item" attributes="video queues mode" noscript>
+    <template>
+        <style type="text/css">
+        .vidname {
+            font-weight: 800;
+            padding-bottom: 10px;
+            font-size: 1.3em;
+            color: #555;
+        }
+        .poster {
+            width: 40%;
+            background-color: #333;
+            border-radius: 4px 0 0 4px;
+        }
+        .poster a {
+            line-height: 0;
+            display: block;
+        }
+        .poster img {
+            width: 100%;
+        }
+        .detail {
+            padding: 10px;
+        }
+        .description {
+            color: #666;
+            font-size: .85em;
+            font-weight: 300;
+        }
+        .btn-watch {
+            color: #fff;
+            background-color: #FF9800;
+        }
+        .btn-confirm {
+            color: #666;
+            background-color: #E0E0E0;
+        }
+        </style>
+        <div id="video_item" class="video-item">
+            <div layout horizontal>
+                <div class="poster">
+                    <img src="{{video.poster}}">
+                </div>
+                <div flex class="detail">
+                    <div horizontal layout class="h-100 w-100">
+                        <div flex>
+                            <div class="vidname">{{video.name}}</div>
+                            <div flex class="description">
+                                {{video.description}}
+                            </div>
+                        </div>
+                        <div layout vertical>
+                            <div flex></div>
+                            <core-tooltip label="Add to queue" class="fancy">
+                                <paper-fab id="btn_add" icon="add" mini="true"></paper-fab>
+                            </core-tooltip>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <paper-toast id="toast_ask" role="alert" text="Do you want to add {{video.name}} to Playing list?">
+                <paper-button raised class="btn-confirm" id="btn_confirm">Yes</paper-button>
+            </paper-toast>
+
+            <paper-toast id="toast_added" role="alert" text="You can">
+                <paper-button raised class="btn-watch" id="btn_go_to_playing">Watch Now</paper-button>
+            </paper-toast>
+            <paper-shadow z="1"></paper-shadow>
+        </div>
+    </template>
+</polymer-element>
