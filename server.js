@@ -1,7 +1,11 @@
 // using express
+// server.js (Express 4.0)
+var express = require('express');
+var bodyParser = require('body-parser');
+var compression = require('compression');
+var methodOverride = require('method-override');
 
-var app = require("express")();
-
+// setting mediaserver
 var settingServer = {
 
     "mode": "development",
@@ -20,11 +24,23 @@ var settingServer = {
 
     "throttle": false
 };
-
 var vidStreamer = require("vid-streamer").settings(settingServer);
 
+var app = express();
+
+// MEDIA SERVER
 app.get("/media/*", vidStreamer);
 
-app.listen(3000);
+// PUBLIC WEBAPP
+app.use(compression());
+app.use(express.static(__dirname + '/hometime'));
+app.use(bodyParser.urlencoded({
+    extended: false
+})); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()); // parse application/json
+app.use(methodOverride()); // simulate DELETE and PUT
 
-console.log("VidStreamer.js up and running on port 3000");
+
+// RUN SERVER
+app.listen(3000);
+console.log("Hometime mediaser running on port 3000");

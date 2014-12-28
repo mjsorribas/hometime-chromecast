@@ -8,3 +8,5 @@
 *.webm
 *.DS_Store
 *.jpg
+node_modules/
+npm-debug.log
