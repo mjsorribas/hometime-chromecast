@@ -1,4 +1,10 @@
-.mp4
-.mkv
-.webm
-.DS_Store
+*.f4v
+*.h264
+*.m4a
+*.m4v
+*.mov
+*.mp3
+*.mp4
+*.webm
+*.DS_Store
+*.jpg
