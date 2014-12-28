@@ -202,11 +202,11 @@
             <div class="player-wrapper">
                 <template if="{{queues.length}}">
                     <video id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500">
-                        <source src="/hometime/videos/{{queues[nowPlayingIndex].videoId}}" type="video/mp4"></source>
+                        <source src="/videos/{{queues[nowPlayingIndex].videoId}}" type="video/mp4"></source>
                     </video>
                 </template>
                 <template if="{{!queues.length}}">
-                    <video width="500" poster="/hometime/assets/img/video-04.jpg">
+                    <video width="500" poster="/assets/img/video-04.jpg">
                     </video>
                 </template>
                 <div class="mask-control {{playStateClasses[currentplayState]}}">

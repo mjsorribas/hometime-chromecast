@@ -296,7 +296,7 @@ Polymer('video-player', {
         // change src
         self.nowPlayingIndex = index;
 
-        vid.querySelector('source').setAttribute("src", "/hometime/videos/" + self.queues[self.nowPlayingIndex].videoId);
+        vid.querySelector('source').setAttribute("src", "/videos/" + self.queues[self.nowPlayingIndex].videoId);
 
         // add active css to item 
         var activeitem = self.shadowRoot.querySelector('.a-video.active');

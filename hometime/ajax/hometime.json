@@ -6,18 +6,18 @@
     "playlists": [{
         "label": "Favorites",
         "icon": "favorite",
-        "dataUrl": "/hometime/ajax/videos-favorites.json"
+        "dataUrl": "/ajax/videos-favorites.json"
     }, {
         "label": "Movies",
         "icon": "theaters",
-        "dataUrl": "/hometime/ajax/videos-movies.json"
+        "dataUrl": "/ajax/videos-movies.json"
     }, {
         "label": "Music Videos",
         "icon": "drive-video",
-        "dataUrl": "/hometime/ajax/videos-musics.json"
+        "dataUrl": "/ajax/videos-musics.json"
     }, {
         "label": "Karaoke",
         "icon": "hardware:keyboard-voice",
-        "dataUrl": "/hometime/ajax/videos-karaokes.json"
+        "dataUrl": "/ajax/videos-karaokes.json"
     }]
 }
