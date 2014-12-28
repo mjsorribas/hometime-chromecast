@@ -6,6 +6,8 @@ Polymer('video-player', {
 
     initializedController: false,
 
+    isFullscreen: false,
+
     receiverAvailable: false,
 
     playStates: {
@@ -65,9 +67,13 @@ Polymer('video-player', {
 
         var castButton = this.$.cast;
 
+        var fullscreenButton = this.$.fullscreen;
+
         var progressSlider = this.$.progress;
 
         var volumer = this.$.volumer;
+
+        self.isFullscreen = false;
 
         progressSlider.isMousedown = false;
 
@@ -246,6 +252,46 @@ Polymer('video-player', {
 
             vid.launchSessionManager();
         });
+
+        // fullscreen icon
+        fullscreenButton.addEventListener('click', function() {
+
+            if (!self.isFullscreen) {
+
+                if (vid.requestFullscreen) {
+
+                    vid.requestFullscreen();
+
+                } else if (vid.mozRequestFullScreen) {
+
+                    vid.mozRequestFullScreen(); // Firefox
+
+                } else if (vid.webkitRequestFullscreen) {
+
+                    vid.webkitRequestFullscreen(); // Chrome and Safari
+                }
+
+                self.isFullscreen = true;
+
+            } else {
+
+                if (document.cancelFullScreen) {
+
+                    document.cancelFullScreen();
+
+                } else if (document.mozCancelFullScreen) {
+
+                    document.mozCancelFullScreen();
+
+                } else if (document.webkitCancelFullScreen) {
+
+                    document.webkitCancelFullScreen();
+                }
+
+                self.isFullscreen = false;
+            }
+
+        }, false);
 
         self.initializedController = true;
     },

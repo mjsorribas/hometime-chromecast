@@ -34,8 +34,11 @@
             background-color: rgba(0, 0, 0, 0.5);
             top: -5px;
         }
-        .mask-control /deep/ core-icon {
-            fill: #FF9500;
+        .mask-control core-icon {
+            color: #FF9500;
+        }
+        core-icon.icon-fullscreen {
+            color: #fff;
         }
         #html5video,
         .progress-block,
@@ -223,6 +226,9 @@
                             </td>
                             <td>
                                 <paper-slider id="progress" min="0" max="100" value="0"></paper-slider>
+                            </td>
+                            <td width="30">
+                                <core-icon id="fullscreen" class="icon-fullscreen" icon="fullscreen"></core-icon>
                             </td>
                         </tr>
                     </table>
