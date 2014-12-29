@@ -82,13 +82,83 @@ app.get('/api/app', function(req, res) {
 
 app.get('/api/playlist/*', function(req, res) {
 
-    res.json([{
-        "poster": "/media/movies/interview.jpg",
-        "name": "The Interview",
-        "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
-        "videoId": "vid.mp4"
-    }]);
+    var q = req.originalUrl.replace(/.*\//, '');
 
+    var resjson = [];
+
+    switch (q) {
+        case 'favorites':
+            resjson = [{
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }, {
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }];
+            break;
+        case 'movies':
+            resjson = [{
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }, {
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }, {
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }];
+            break;
+        case 'musics':
+            resjson = [{
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }, {
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }, {
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }, {
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }];
+            break;
+        case 'karaokes':
+            resjson = [{
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }];
+            break;
+        default:
+            resjson = [{
+                "poster": "/media/movies/interview.jpg",
+                "name": "The Interview",
+                "description": "Dave Skylark (James Franco) and his producer Aaron Rapoport (Seth Rogen) are the team behind the popular tabloid-TV show. After learning that North Korea's Kim Jong Un (Randall Park) is a huge fan of the show, they successfully set up an interview with him",
+                "videoId": "vid.mp4"
+            }];
+            // 
+    }
+    res.json(resjson);
 });
 
 
