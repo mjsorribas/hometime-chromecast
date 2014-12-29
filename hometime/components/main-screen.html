@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="main-screen.css">
 
         <!-- mode waterfall-tall will show large header -->
-        <core-ajax id="data_hometime" auto url="../ajax/hometime.json" response="{{data}}" handleAs="json"></core-ajax>
+        <core-ajax id="data_hometime" auto url="/api/app" response="{{data}}" handleAs="json"></core-ajax>
 
         <core-scaffold mode="{{modes[currentMode]}}" responsiveWidth="600px">
 
@@ -62,7 +62,7 @@
                 <core-icon-button tool on-tap="{{gotoList}}" icon="arrow-back"></core-icon-button>
             </template>
             <div flex tool class="font-800">{{appName}}</div>
-            
+
 
             <!-- change mode menu -->
             <my-menu-button tool icon="more-vert" selected="{{currentMode}}" valign="top" halign="right">

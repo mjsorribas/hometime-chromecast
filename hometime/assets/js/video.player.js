@@ -235,7 +235,14 @@ Polymer('video-player', {
 
         vid.addEventListener('ended', function(e) {
 
-            console.log('ended');
+            if (self.queues.length - 1 - self.nowPlayingIndex) {
+
+                self.gotoVideo(self.nowPlayingIndex + 1);
+
+            } else {
+
+                self.gotoVideo(0);
+            }
         });
 
         // click cast icon

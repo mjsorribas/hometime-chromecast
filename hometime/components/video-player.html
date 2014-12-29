@@ -40,7 +40,7 @@
         core-icon.icon-fullscreen {
             color: #fff;
         }
-        #html5video,
+        .video,
         .progress-block,
         #progress {
             width: 100%;
@@ -204,12 +204,12 @@
             <!-- google cast player -->
             <div class="player-wrapper">
                 <template if="{{queues.length}}">
-                    <video id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500">
+                    <video class="video" id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500">
                         <source src="/videos/{{queues[nowPlayingIndex].videoId}}" type="video/mp4"></source>
                     </video>
                 </template>
                 <template if="{{!queues.length}}">
-                    <video width="500" poster="/assets/img/video-04.jpg">
+                    <video class="video" width="500" poster="/assets/img/404.png">
                     </video>
                 </template>
                 <div class="mask-control {{playStateClasses[currentplayState]}}">
