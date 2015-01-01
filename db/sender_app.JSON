@@ -1,0 +1,26 @@
+{
+  "appName": "Home Time",
+  "menuTile": "PlayLists",
+  "playlists": [
+    {
+      "label": "Favorites",
+      "icon": "favorite",
+      "dataUrl": "/api/playlist/favorites"
+    },
+    {
+      "label": "Movies",
+      "icon": "theaters",
+      "dataUrl": "/api/playlist/movies"
+    },
+    {
+      "label": "Music Videos",
+      "icon": "drive-video",
+      "dataUrl": "/api/playlist/musics"
+    },
+    {
+      "label": "Karaoke",
+      "icon": "hardware:keyboard-voice",
+      "dataUrl": "/api/playlist/karaokes"
+    }
+  ]
+}

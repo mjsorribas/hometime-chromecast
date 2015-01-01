@@ -1,0 +1,10 @@
+{
+    "mode": "development",
+    "forceDownload": false,
+    "random": true,
+    "rootFolder": "/Users/nvt/Work/git/hometime-chromecast/media/",
+    "rootPath": "media/",
+    "server": "VidStreamer.js/0.1.4",
+    "maxAge": "3600",
+    "throttle": false
+}

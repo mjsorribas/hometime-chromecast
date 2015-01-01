@@ -1,0 +1,120 @@
+{
+    "supportFiles": [
+        ".swf",
+        ".flv",
+        ".mp4",
+        ".avi",
+        ".mpeg",
+        ".mpg",
+        ".mov",
+        ".movie",
+        ".webm",
+        ".qt",
+        ".mpa",
+        ".mp3",
+        ".wav"
+    ],
+    "library": {
+        "funny": {
+            "2014": {
+                "_htXOLCHCq1H4slZBPsf3BUxtEPhtN2qX28.mp4": {
+                    "title": "Minions_Trailer_1_2015_Steve_Carell_Movie_HD",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T09:32:05.000Z"
+                }
+            }
+        },
+        "karaokes": {
+            "2013": {
+                "_htEtho7YUQBDA1tFwAknhEcaqGDGSqPlE1.mp4": {
+                    "title": "karaoke1",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:04:48.000Z"
+                },
+                "_htiRVvnXcdJ5WFionPyV1GK9bxna4WsykT.mp4": {
+                    "title": "karaoke2",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:04:48.000Z"
+                },
+                "_ht1Bq4pkOhOkv92JHEdHgHPxp9OxZhzTgy.mp4": {
+                    "title": "karaoke3",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:04:47.000Z"
+                }
+            },
+            "2014": {
+                "_htR8sed3uV9obO2KTKDWr2MUv3gmC2CUTf.mp4": {
+                    "title": "karaoke4",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:04:48.000Z"
+                },
+                "_htd9EYlVyiKD1yEaIrwTeawRF1eezyS0UY.mp4": {
+                    "title": "karaoke5",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:04:48.000Z"
+                },
+                "_htG5dedHazwMI05GY0RTxlW8sT8PYwciqL.mp4": {
+                    "title": "karaoke6",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:04:49.000Z"
+                }
+            }
+        },
+        "movies": {
+            "2014": {
+                "_htFlVUT8MRl5kzoI5y55NuvYBD8KBN5wrq.mp4": {
+                    "title": "Avengers_Age_of_Ultron_Official_Extended_TRAILER_2014_Marvel_Movie_HD",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:05:41.000Z"
+                },
+                "_hts320hdNUQagWF23klweAxAR13wfmBBOT.mp4": {
+                    "title": "movie6",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:05:41.000Z"
+                },
+                "_htWNpRmUzBxpc5pKy1iMrt8qAmZvq3rP6A.mp4": {
+                    "title": "movie7",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:05:41.000Z"
+                }
+            }
+        },
+        "musics": {
+            "2013": {
+                "_htIybRVCkkHHH2D6PJI7twZlYhxx1lEBu2.mp4": {
+                    "title": "music2",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:05:48.000Z"
+                }
+            },
+            "2014": {
+                "_hto649FSzJr7SHshJJ9ti4977aFFcvFhss.mp4": {
+                    "title": "Chắc Ai Đó Sẽ Về - Sơn Tùng MTP [OFFICIAL MV]",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T06:40:29.000Z"
+                },
+                "_ht1WG3qWr8BIeN6XAfEpsYJSQdHATD1twQ.mp4": {
+                    "title": "Katy_Perry_-_Dark_Horse_Official_ft._Juicy_J",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T08:22:20.000Z"
+                }
+            }
+        },
+        "others": {
+            "2013": {
+                "_htmb3PqZQAhLlYM8H7DAV0mLN7rMM4oBXf.mp4": {
+                    "title": "BIRDS_OF_PREY_4K_ULTRA_HD_60fps",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:06:03.000Z"
+                }
+            },
+            "2014": {
+                "_htdmQr9n4623V1YNIMCT2BmQP0gK7pDWGU.mp4": {
+                    "title": "PHANTOM_FLEX_4K_1000FPS_ULTRAHD",
+                    "fileType": ".mp4",
+                    "addTime": "2015-01-01T07:06:03.000Z"
+                }
+            }
+        }
+    }
+}

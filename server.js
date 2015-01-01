@@ -1,42 +1,41 @@
 // using express
 // server.js (Express 4.0)
-var express = require('express');
+var express = require('express'),
 
-var bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
 
-var compression = require('compression');
+    compression = require('compression'),
 
-var methodOverride = require('method-override');
+    methodOverride = require('method-override'),
 
-var db = require('diskdb');
-
-// setting mediaserver
-var settingServer = {
-
-    "mode": "development",
-
-    "forceDownload": false,
-
-    "random": true,
-
-    "rootFolder": __dirname + "/media/",
-
-    "rootPath": "media/",
-
-    "server": "VidStreamer.js/0.1.4",
-
-    "maxAge": "3600",
-
-    "throttle": false
-};
-var vidStreamer = require("vid-streamer").settings(settingServer);
+    JsonDB = require('node-json-db');
 
 var app = express();
 
-// MEDIA SERVER
+
+
+// ************* MEDIA SERVER *************
+
+// read media server config infomations
+var server_setting = new JsonDB('./db/server_config', true, true);
+
+var rootFolder = __dirname + '/media/';
+
+if (server_setting.getData('/rootFolder') !== rootFolder) {
+
+    server_setting.push('/rootFolder', rootFolder);
+}
+var vidStreamer = require("vid-streamer").settings(server_setting.getData('/'));
+
 app.get("/media/*", vidStreamer);
 
-// PUBLIC WEBAPP
+
+
+// ************* PUBLIC WEBAPP (CHROMECAST SENDER APP) *************
+
+// load sender app beginer infomation
+var db_sender_app = new JsonDB('./db/sender_app', true, true).getData('/');
+
 app.use(compression());
 
 app.use(express.static(__dirname + '/hometime'));
@@ -51,32 +50,10 @@ app.use(bodyParser.json()); // parse application/json
 
 app.use(methodOverride()); // simulate DELETE and PUT
 
-
+// load chromecast sender app beginer data
 app.get('/api/app', function(req, res) {
 
-    res.json({
-        "appName": "Home Time",
-
-        "menuTile": "PlayLists",
-
-        "playlists": [{
-            "label": "Favorites",
-            "icon": "favorite",
-            "dataUrl": "/api/playlist/favorites"
-        }, {
-            "label": "Movies",
-            "icon": "theaters",
-            "dataUrl": "/api/playlist/movies"
-        }, {
-            "label": "Music Videos",
-            "icon": "drive-video",
-            "dataUrl": "/api/playlist/musics"
-        }, {
-            "label": "Karaoke",
-            "icon": "hardware:keyboard-voice",
-            "dataUrl": "/api/playlist/karaokes"
-        }]
-    });
+    res.json(db_sender_app);
 
 });
 
@@ -161,7 +138,7 @@ app.get('/api/playlist/*', function(req, res) {
     res.json(resjson);
 });
 
-
 // RUN SERVER
 app.listen(3000);
+
 console.log("Hometime mediaser running on port 3000");
