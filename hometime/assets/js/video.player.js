@@ -57,7 +57,7 @@ Polymer('video-player', {
 
         var self = this;
 
-        var vid = this.shadowRoot.querySelector('#html5video');
+        var vid = this.$.html5video;
 
         var playButton = this.$.play;
 
@@ -96,8 +96,6 @@ Polymer('video-player', {
         // play/pause
 
         playButton.addEventListener('tap', function() {
-
-            self.checkInitialize();
 
             if (self.currentplayState == self.playStates.pausing) {
 
@@ -313,7 +311,7 @@ Polymer('video-player', {
 
             self.checkInitialize();
 
-        }, 300);
+        }, 200);
     },
     // click play this
 
@@ -326,7 +324,7 @@ Polymer('video-player', {
 
     checkInitialize: function() {
 
-        if (!this.initializedController && this.queues.length) {
+        if (!this.initializedController) {
 
             this.initialController();
         }
@@ -339,7 +337,7 @@ Polymer('video-player', {
         self.checkInitialize();
 
         // pause first
-        var vid = self.shadowRoot.querySelector('#html5video');
+        var vid = this.$.html5video;
 
         vid.pause();
 
