@@ -1,7 +1,23 @@
 {
+  "mimeTypes": {
+    ".swf": "application/x-shockwave-flash",
+    ".flv": "video/x-flv",
+    ".f4v": "video/mp4",
+    ".mp4": "video/mp4",
+    ".avi": "video/x-msvideo",
+    ".mpeg": "video/mpeg",
+    ".mpg": "video/mpeg",
+    ".mov": "video/quicktime",
+    ".movie": "video/x-sgi-movie",
+    ".webm": "video/webm",
+    ".qt": "video/quicktime",
+    ".mp3": "audio/mpeg",
+    ".wav": "audio/x-wav"
+  },
   "supportFiles": [
     ".swf",
     ".flv",
+    ".f4v",
     ".mp4",
     ".avi",
     ".mpeg",

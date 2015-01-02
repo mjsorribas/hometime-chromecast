@@ -7,7 +7,9 @@ var fs = require('fs'),
 // thirt argument <=> readable format.
 var media_db = new JsonDB('./db/media', true, true);
 
-var mediaTypes = media_db.getData('/supportFiles');
+var supportFiles = media_db.getData('/supportFiles');
+
+var mimeTypes = media_db.getData('/mimeTypes');
 
 // _ht <=> Hometime
 var indexedPrefix = '_ht';
@@ -29,7 +31,7 @@ var dirTree = function(filename) {
         var fileType = path.extname(filename);
 
         // if is media file
-        if (fileType && mediaTypes.indexOf(fileType) > 0) {
+        if (fileType && supportFiles.indexOf(fileType) > 0) {
 
             var basename = path.basename(filename); // cotains exts
 
@@ -68,9 +70,10 @@ var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
         } else {
 
             var media = {
-                'fileType': fileType,
-                'description': '',
                 'title': title,
+                'fileType': fileType,
+                'mediaType': mimeTypes[fileType],
+                'description': '',
                 'addTime': atime
             };
             // save to db
