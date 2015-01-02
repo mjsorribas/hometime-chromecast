@@ -49,19 +49,24 @@
                     <img src="{{video.poster}}">
                 </div>
                 <div flex class="detail">
-                    <div horizontal layout class="h-100 w-100">
-                        <div flex>
+                    <div vertical layout>
+                        <div>
                             <div class="vidname">{{video.title}}</div>
-                            <div flex class="description">
-                                {{video.description}}
-                                <small>date added: {{video.addTime}}</small>
-                            </div>
                         </div>
-                        <div layout vertical>
-                            <div flex></div>
-                            <core-tooltip label="Add to queue" class="fancy">
-                                <paper-fab id="btn_add" icon="add" mini="true"></paper-fab>
-                            </core-tooltip>
+
+                        <div horizontal layout class="h-100 w-100">
+                            <div flex>
+                                <div flex class="description">
+                                    {{video.description}}
+                                    <small>date added: {{video.addTime}}</small>
+                                </div>
+                            </div>
+                            <div layout vertical>
+                                <div flex></div>
+                                <core-tooltip label="Add to queue" class="fancy">
+                                    <paper-fab id="btn_add" icon="add" mini="true"></paper-fab>
+                                </core-tooltip>
+                            </div>
                         </div>
                     </div>
                 </div>

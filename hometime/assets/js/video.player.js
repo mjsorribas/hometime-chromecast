@@ -301,6 +301,8 @@ Polymer('video-player', {
         }, false);
 
         self.initializedController = true;
+
+        console.log('complete intialize controller');
     },
 
     ready: function() {
@@ -313,11 +315,9 @@ Polymer('video-player', {
 
         setTimeout(function() {
 
-            if (!self.initializedController && self.queues.length) {
+            self.checkInitialize();
 
-                self.initialController();
-            }
-        }, 200);
+        }, 500);
     },
     // click play this
 
@@ -328,16 +328,19 @@ Polymer('video-player', {
         this.gotoVideo(index);
     },
 
+    checkInitialize: function() {
+
+        if (!this.initializedController && this.queues.length) {
+
+            this.initialController();
+        }
+    },
+
     gotoVideo: function(index) {
 
         var self = this;
 
-        console.log('initializedController = ', self.initializedController);
-
-        if (!self.initializedController) {
-
-            self.initialController();
-        }
+        self.checkInitialize();
 
         // pause first
         var vid = self.shadowRoot.querySelector('#html5video');

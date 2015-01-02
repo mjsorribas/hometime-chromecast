@@ -23,8 +23,8 @@
       "dataUrl": "/library/karaokes"
     },
     {
-      "label": "Other",
-      "icon": "hardware:keyboard-voice",
+      "label": "Others",
+      "icon": "icons:turned-in",
       "dataUrl": "/library/others"
     }
   ]

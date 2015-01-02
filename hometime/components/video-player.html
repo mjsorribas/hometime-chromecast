@@ -213,7 +213,7 @@
                     </video>
                 </template>
                 <div class="mask-control {{playStateClasses[currentplayState]}}">
-                    <core-icon id="play" class="control-icon icon-play" icon="{{playStateIcons[currentplayState]}}"></core-icon>
+                    <core-icon id="play" on-tap="{{checkInitialize}}" class="control-icon icon-play" icon="{{playStateIcons[currentplayState]}}"></core-icon>
 
                     <core-icon id="cast" class="control-icon icon-cast" icon="{{castStateIcons[currentCastState]}}"></core-icon>
                     <core-icon id="volume_icon" class="control-icon icon-volume" icon="{{volumeStateIcons[1]}}"></core-icon>
@@ -248,7 +248,7 @@
                 </table>
                 <div flex class="playlist">
                     <template repeat="{{video, index in queues}}">
-                        <table class="a-video">
+                        <table class="a-video smooth-trans">
                             <tr>
                                 <td class="thumbnail">
                                     <img src="{{video.poster}}">

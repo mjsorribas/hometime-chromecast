@@ -46,7 +46,7 @@
 
                 <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{selectMenu}}">
                     <template repeat="{{data.library}}">
-                        <core-item label="{{label}}" icon="{{icon}}"></core-item>
+                        <core-item class="smooth-trans" label="{{label}}" icon="{{icon}}"></core-item>
                     </template>
                 </core-selector>
 
@@ -67,7 +67,7 @@
             <!-- change mode menu -->
             <my-menu-button tool icon="more-vert" selected="{{currentMode}}" valign="top" halign="right">
                 <paper-item icon="list" label="Playlist"></paper-item>
-                <paper-item icon="settings-input-antenna" label="Playing"></paper-item>
+                <paper-item icon="av:queue" label="Playing"></paper-item>
             </my-menu-button>
 
             <!-- content -->
