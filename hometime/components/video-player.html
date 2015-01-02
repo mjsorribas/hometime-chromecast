@@ -204,8 +204,8 @@
             <!-- google cast player -->
             <div class="player-wrapper">
                 <template if="{{queues.length}}">
-                    <video class="video" id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500">
-                        <source src="/videos/{{queues[nowPlayingIndex].videoId}}" type="video/mp4"></source>
+                    <video class="video" id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500" poster="{{queues[nowPlayingIndex].poster}}">
+                        <source src="{{queues[nowPlayingIndex].src}}" type="{{queues[nowPlayingIndex].mediaType}}"></source>
                     </video>
                 </template>
                 <template if="{{!queues.length}}">
@@ -246,7 +246,6 @@
                         </td>
                     </tr>
                 </table>
-
                 <div flex class="playlist">
                     <template repeat="{{video, index in queues}}">
                         <table class="a-video">
@@ -255,7 +254,7 @@
                                     <img src="{{video.poster}}">
                                 </td>
                                 <td class="name">
-                                    {{video.name}}
+                                    {{video.title}}
                                 </td>
                                 <td class="play-this">
                                     <paper-fab index="{{index}}" on-tap="{{playThis}}" icon="av:play-arrow" mini="true"></paper-fab>

@@ -50,11 +50,13 @@ var dirTree = function(filename) {
 
 var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
 
-    var indexedName = indexedPrefix + randomstring.generate() + fileType;
+    var indexedNameEts = indexedPrefix + randomstring.generate() + fileType; // ex: _ytRANDOMSTRING.mp4
 
-    var newFullname = path.join(dirname, indexedName);
+    // create new full name for fs rename
+    var newFullname = path.join(dirname, indexedNameEts);
 
-    var db_source = newFullname.replace(__dirname + '/media', '');
+    //ex: /library/musics/_ytRANDOMSTRING
+    var db_source = newFullname.replace(__dirname + '/media', '').replace(fileType, '');
 
     fs.rename(filename, newFullname, function(err) {
 
@@ -66,8 +68,9 @@ var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
         } else {
 
             var media = {
-                'title': title,
                 'fileType': fileType,
+                'description': '',
+                'title': title,
                 'addTime': atime
             };
             // save to db
@@ -87,10 +90,9 @@ if (module.parent === undefined) {
 }
 
 // BEGIN SEARCH in FOLDER and IMPORT to DB
-dirTree(__dirname + '/media');
+// dirTree(__dirname + '/media');
 
 // 
-
 // 
 // 
 // 

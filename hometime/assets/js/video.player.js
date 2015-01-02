@@ -307,6 +307,8 @@ Polymer('video-player', {
 
         var self = this;
 
+        window.deg = self;
+
         console.log('video-player ready');
 
         setTimeout(function() {
@@ -349,7 +351,7 @@ Polymer('video-player', {
         // change src
         self.nowPlayingIndex = index;
 
-        vid.querySelector('source').setAttribute("src", "/videos/" + self.queues[self.nowPlayingIndex].videoId);
+        vid.querySelector('source').setAttribute("src", self.queues[self.nowPlayingIndex].src);
 
         // add active css to item 
         var activeitem = self.shadowRoot.querySelector('.a-video.active');
