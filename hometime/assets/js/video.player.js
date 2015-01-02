@@ -57,7 +57,7 @@ Polymer('video-player', {
 
         var self = this;
 
-        var vid = this.$.html5video;
+        var vid = this.$.htmlvideo;
 
         var playButton = this.$.play;
 
@@ -93,6 +93,64 @@ Polymer('video-player', {
 
             self.currentCastState = self.castStates.unavailable;
 
+
+        //IMPORTANT use this to get the currentTime even when casting
+        vid.addEventListener('google-castable-video-timeupdate', function(e) {
+
+            if (!progressSlider.isMousedown) {
+
+                progressSlider.value = e.detail.currentTime * (100 / vid.duration);
+            }
+            self.currentSTimeFormated = formatTime(vid.bothCurrentTime);
+        });
+
+        // show cast icon when discover available chromecast device
+        vid.addEventListener('google-castable-video-receiver-status', function(e) {
+
+            console.log('receiverAvailable=', vid.receiverAvailable);
+
+            if (!vid.receiverAvailable)
+
+                self.currentCastState = self.castStates.unavailable;
+        });
+
+        //listen for casting event to change icon
+        vid.addEventListener('google-castable-video-casting', function(e) {
+
+            if (e.detail.casting) {
+
+                self.currentCastState = self.castStates.connected;
+
+            } else {
+
+                self.currentCastState = self.castStates.disconnected;
+            }
+        });
+
+        vid.addEventListener('play', function() {
+
+            self.currentplayState = self.playStates.playing;
+
+        });
+
+        vid.addEventListener('pause', function() {
+
+            self.currentplayState = self.playStates.pausing;
+
+        });
+
+        vid.addEventListener('ended', function(e) {
+
+            if (self.queues.length - 1 - self.nowPlayingIndex) {
+
+                self.gotoVideo(self.nowPlayingIndex + 1);
+
+            } else {
+
+                self.gotoVideo(0);
+            }
+        });
+
         // play/pause
 
         playButton.addEventListener('tap', function() {
@@ -101,13 +159,13 @@ Polymer('video-player', {
 
                 vid.play();
 
-                self.currentplayState = self.playStates.playing;
+                // self.currentplayState = self.playStates.playing;
 
             } else {
 
                 vid.pause();
 
-                self.currentplayState = self.playStates.pausing;
+                // self.currentplayState = self.playStates.pausing;
             }
         });
 
@@ -156,6 +214,7 @@ Polymer('video-player', {
             }
         };
 
+        // seek
         progressSlider.addEventListener('mousedown', handleStartSlide);
 
         progressSlider.addEventListener('touchstart', handleStartSlide);
@@ -163,39 +222,6 @@ Polymer('video-player', {
         window.addEventListener('mouseup', handleStopSlide);
 
         window.addEventListener('touchend', handleStopSlide);
-
-        //IMPORTANT use this to get the currentTime even when casting
-        vid.addEventListener('google-castable-video-timeupdate', function(e) {
-
-            if (!progressSlider.isMousedown) {
-
-                progressSlider.value = e.detail.currentTime * (100 / vid.duration);
-            }
-            self.currentSTimeFormated = formatTime(vid.bothCurrentTime);
-        });
-
-        // show cast icon when discover available chromecast device
-        vid.addEventListener('google-castable-video-receiver-status', function(e) {
-
-            console.log('receiverAvailable=', vid.receiverAvailable);
-
-            if (!vid.receiverAvailable)
-
-                self.currentCastState = self.castStates.unavailable;
-        });
-
-        //listen for casting event to change icon
-        vid.addEventListener('google-castable-video-casting', function(e) {
-
-            if (e.detail.casting) {
-
-                self.currentCastState = self.castStates.connected;
-
-            } else {
-
-                self.currentCastState = self.castStates.disconnected;
-            }
-        });
 
         // volume
         volumer.addEventListener('core-change', function() {
@@ -232,18 +258,6 @@ Polymer('video-player', {
                     volumer.isShowing = false;
 
                 }, 1500);
-            }
-        });
-
-        vid.addEventListener('ended', function(e) {
-
-            if (self.queues.length - 1 - self.nowPlayingIndex) {
-
-                self.gotoVideo(self.nowPlayingIndex + 1);
-
-            } else {
-
-                self.gotoVideo(0);
             }
         });
 
@@ -337,7 +351,7 @@ Polymer('video-player', {
         self.checkInitialize();
 
         // pause first
-        var vid = this.$.html5video;
+        var vid = this.$.htmlvideo;
 
         vid.pause();
 
@@ -374,19 +388,21 @@ Polymer('video-player', {
 
         var self = this;
 
+        window.deg = self;
+
         var index = parseInt(sender.getAttribute("index"), 0);
 
         var target = self.shadowRoot.querySelectorAll('.a-video')[index];
 
         target.classList.add('removed');
 
+        // if the last item in list
+        if (self.queues.length == 1) {
+
+            self.$.htmlvideo.pause();
+        }
+
         setTimeout(function() {
-
-            // if the last item in list
-            if (self.queues.length == 1) {
-
-                self.vid.stop();
-            }
 
             self.queues.splice(index, 1);
 

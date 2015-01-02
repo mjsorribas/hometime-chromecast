@@ -12,7 +12,7 @@
             <!-- google cast player -->
             <div class="player-wrapper">
 
-                <video width="500" class="video" id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500" poster="{{queues.length ? queues[nowPlayingIndex].poster : '/assets/img/404.png'}}">
+                <video width="500" class="video" id="htmlvideo" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500" poster="{{queues.length ? queues[nowPlayingIndex].poster : '/assets/img/404.png'}}">
                     <source src="{{queues.length ? queues[nowPlayingIndex].src : ''}}" type="{{queues.length ? queues[nowPlayingIndex].mediaType : ''}}"></source>
                     <track label="English" kind="captions" srclang="en" src="/media/library/movies/2013/sintel-en.vtt" default=""></track>
                 </video>
