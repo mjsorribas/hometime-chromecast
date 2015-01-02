@@ -203,15 +203,11 @@
         <div vertical layout fit class="video-player-wrapper">
             <!-- google cast player -->
             <div class="player-wrapper">
-                <template if="{{queues.length}}">
-                    <video class="video" id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500" poster="{{queues[nowPlayingIndex].poster}}">
-                        <source src="{{queues[nowPlayingIndex].src}}" type="{{queues[nowPlayingIndex].mediaType}}"></source>
-                    </video>
-                </template>
-                <template if="{{!queues.length}}">
-                    <video class="video" width="500" poster="/assets/img/404.png">
-                    </video>
-                </template>
+
+                <video width="500" class="video" id="html5video" is="google-castable-video" on-google-castable-video-initialized="{{initialController}}" width="500" poster="{{queues.length ? queues[nowPlayingIndex].poster : '/assets/img/404.png'}}">
+                    <source src="{{queues.length ? queues[nowPlayingIndex].src : ''}}" type="{{queues.length ? queues[nowPlayingIndex].mediaType : ''}}"></source>
+                    <track label="English" kind="captions" srclang="en" src="/media/library/movies/2013/sintel-en.vtt" default=""></track>
+                </video>
                 <div class="mask-control {{playStateClasses[currentplayState]}}">
                     <core-icon id="play" on-tap="{{checkInitialize}}" class="control-icon icon-play" icon="{{playStateIcons[currentplayState]}}"></core-icon>
 

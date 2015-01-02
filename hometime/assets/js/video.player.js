@@ -73,6 +73,8 @@ Polymer('video-player', {
 
         var volumer = this.$.volumer;
 
+        self.initializedController = true;
+
         self.isFullscreen = false;
 
         progressSlider.isMousedown = false;
@@ -85,7 +87,7 @@ Polymer('video-player', {
 
         volumer.isShowing = false;
 
-        console.log(vid.receiverAvailable);
+        console.log('receiverAvailable=', vid.receiverAvailable);
 
         if (!vid.receiverAvailable)
 
@@ -94,6 +96,8 @@ Polymer('video-player', {
         // play/pause
 
         playButton.addEventListener('tap', function() {
+
+            self.checkInitialize();
 
             if (self.currentplayState == self.playStates.pausing) {
 
@@ -175,7 +179,7 @@ Polymer('video-player', {
         // show cast icon when discover available chromecast device
         vid.addEventListener('google-castable-video-receiver-status', function(e) {
 
-            console.log('available casting', vid.receiverAvailable);
+            console.log('receiverAvailable=', vid.receiverAvailable);
 
             if (!vid.receiverAvailable)
 
@@ -248,11 +252,7 @@ Polymer('video-player', {
         // click cast icon
         castButton.addEventListener('click', function() {
 
-            if (vid.receiverAvailable) {
-
-                console.log('available');
-
-            } else {
+            if (!vid.receiverAvailable) {
 
                 self.$.dialog_nocast.toggle();
             }
@@ -300,8 +300,6 @@ Polymer('video-player', {
 
         }, false);
 
-        self.initializedController = true;
-
         console.log('complete intialize controller');
     },
 
@@ -309,15 +307,13 @@ Polymer('video-player', {
 
         var self = this;
 
-        window.deg = self;
-
         console.log('video-player ready');
 
         setTimeout(function() {
 
             self.checkInitialize();
 
-        }, 500);
+        }, 300);
     },
     // click play this
 

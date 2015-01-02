@@ -26,6 +26,8 @@ module.exports = {
 
                     vid.src = base + id + vid.fileType;
 
+                    vid.subtitle = base + id + '.vtt';
+
                     videos.push(vid);
                 });
             });
