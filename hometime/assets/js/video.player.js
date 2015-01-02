@@ -382,6 +382,12 @@ Polymer('video-player', {
 
         setTimeout(function() {
 
+            // if the last item in list
+            if (self.queues.length == 1) {
+
+                self.vid.stop();
+            }
+
             self.queues.splice(index, 1);
 
         }, 450);

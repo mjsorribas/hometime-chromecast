@@ -2,19 +2,19 @@
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 300;
-    src: url(/hometime/assets/font/OpenSans-Light.ttf) format('ttf');
+    src: url(../font/OpenSans-Light.ttf) format('ttf');
 }
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: normal;
-    src: url(/hometime/assets/font/OpenSans-Regular.ttf) format('ttf');
+    src: url(../font/OpenSans-Regular.ttf) format('ttf');
 }
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 800;
-    src: url(/hometime/assets/font/OpenSans-Semibold.ttf) format('ttf');
+    src: url(../font/OpenSans-Semibold.ttf) format('ttf');
 }
 core-scaffold /deep/ .w-100 {
     width: 100%;
@@ -54,7 +54,7 @@ core-toolbar {
 }
 core-scaffold::shadow core-toolbar {
     background-color: #FF9800;
-    background-image: url(../assets/img/background.jpg);
+    background-image: url(../img/background.jpg);
     background-size: cover;
     background-position: center center;
 }
