@@ -1,5 +1,8 @@
-<link rel="import" href="../polymer/polymer.html">
-<!-- <link rel="import" href="google-cast-sender-api.html"> -->
+
+<!-- saved from url=(0118)http://googlewebcomponents.github.io/google-castable-video/components/google-castable-video/google-castable-video.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; } 
+</style><link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="google-cast-sender-api-local.html">
 
 <!--
@@ -24,358 +27,344 @@ Instead of listening for the video element's `timeupdate` event please listen fo
 <!-- TODO(tschaeff):
 - ratechange to change playbackspeed (if even possible)
 -->
-<polymer-element name="google-castable-video" extends="video" on-seeked="{{onSeeked}}" on-volumechange="{{onVolumechange}}" on-timeupdate="{{onTimeupdate}}">
+<style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none;}
+html /deep/ [touch-action="none"]{ -ms-touch-action: none; touch-action: none;}
+[touch-action="auto"]{ -ms-touch-action: auto; touch-action: auto;}
+html /deep/ [touch-action="auto"]{ -ms-touch-action: auto; touch-action: auto;}
+[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x;}
+html /deep/ [touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x;}
+[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y;}
+html /deep/ [touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y;}
+[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y;}
+html /deep/ [touch-action="pan-x pan-y"],html /deep/ [touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y;}
+[touch-action="manipulation"]{ -ms-touch-action: manipulation; touch-action: manipulation;}
+html /deep/ [touch-action="manipulation"]{ -ms-touch-action: manipulation; touch-action: manipulation;}
+</style><script src="chrome-extension://boadgeojelhgndaghljhdicfkmllpafd/cast_sender.js"></script></head><body><polymer-element name="google-castable-video" extends="video" on-seeked="{{onSeeked}}" on-volumechange="{{onVolumechange}}" on-timeupdate="{{onTimeupdate}}">
 
-    <script>
+  <script>
     (function() {
-        // Set static variable for the timeupdate delay.
-        var _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY = 250;
+      // Set static variable for the timeupdate delay.
+      var _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY = 250;
 
-        Polymer({
-            /**
-             * The real paused state for local and cast playback.
-             *
-             * @property bothPaused
-             * @type bool
-             * @default true
-             */
-            _bothPaused: false,
-            get bothPaused() {
-                return this._bothPaused;
-            },
+      Polymer({
+        /**
+         * The real paused state for local and cast playback.
+         * 
+         * @property bothPaused
+         * @type bool
+         * @default true
+         */
+        _bothPaused: false, 
+        get bothPaused() { return this._bothPaused; },
 
-            /**
-             * Sets or returns the current playback position (in seconds).
-             * Since the local video is paused when the video is playing on the Chromecast device
-             * the objects currentTime property doesn't represent the actual currentTime of the video
-             * playing on the Chromecast device. To always get the actual position please use bothCurrentTime.
-             *
-             * @property bothCurrentTime
-             * @type number
-             * @default 0
-             */
-            get bothCurrentTime() {
-                if (this._casting && this._castMedia) {
-                    return this._castMedia.getEstimatedTime();
-                } else {
-                    return this.currentTime;
-                }
-            },
+        /**
+         * Sets or returns the current playback position (in seconds).
+         * Since the local video is paused when the video is playing on the Chromecast device
+         * the objects currentTime property doesn't represent the actual currentTime of the video
+         * playing on the Chromecast device. To always get the actual position please use bothCurrentTime.
+         * 
+         * @property bothCurrentTime
+         * @type number
+         * @default 0
+         */
+        get bothCurrentTime() {
+          if (this._casting && this._castMedia) {
+            return this._castMedia.getEstimatedTime();
+          } else {
+            return this.currentTime;
+          }
+        },
 
-            set bothCurrentTime(val) {
-                return this.currentTime = val;
-            },
+        set bothCurrentTime(val) { return this.currentTime = val; },  
 
-            /**
-             * The mode state depending on whether the video is playing locally or on the cast device.
-             *
-             * @property casting
-             * @type bool
-             * @default false
-             */
-            _casting: false,
-            get casting() {
-                return this._casting;
-            },
+        /**
+         * The mode state depending on whether the video is playing locally or on the cast device.
+         * 
+         * @property casting
+         * @type bool
+         * @default false
+         */
+        _casting: false,
+        get casting() { return this._casting; },
 
-            /**
-             * Returns if any Chromecast is available.
-             *
-             * @property receiverAvailable
-             * @type bool
-             * @default false
-             */
-            _receiverAvailable: false,
-            get receiverAvailable() {
-                return this._receiverAvailable;
-            },
+        /**
+         * Returns if any Chromecast is available.
+         * 
+         * @property receiverAvailable
+         * @type bool
+         * @default false
+         */
+        _receiverAvailable: false,
+        get receiverAvailable() { return this._receiverAvailable; },
 
-            /**
-             * The `chrome.cast.Media` object.
-             *
-             * @property castMedia
-             * @type chrome.cast.Media
-             * @default null
-             */
-            _castMedia: null,
-            get castMedia() {
-                return this._castMedia;
-            },
+        /**
+         * The `chrome.cast.Media` object.
+         * 
+         * @property castMedia
+         * @type chrome.cast.Media
+         * @default null
+         */
+        _castMedia: null,
+        get castMedia() { return this._castMedia; },
 
-            /**
-             * The `chrome.cast.Session` object.
-             *
-             * @property session
-             * @type chrome.cast.Session
-             * @default null
-             */
-            _session: null,
-            get session() {
-                return this._session;
-            },
+        /**
+         * The `chrome.cast.Session` object.
+         * 
+         * @property session
+         * @type chrome.cast.Session
+         * @default null
+         */
+        _session: null,
+        get session() { return this._session; },
 
-            ready: function() {
-                // Initialize the cast api.
-
-                console.log('castable-video ready');
-
-                // this.fire('google-castable-video-ready');
-
-                window['__onGCastApiAvailable'] = function(loaded, errorInfo) {
-                    console.log('cast API available');
-                    console.log('cast API loaded =', loaded);
-                    if (loaded) {
-                        this.initializeCastApi();
-                    } else {
-                        this.triggerError('INITIALIZE_ERROR');
-                    }
-                }.bind(this);
-            },
-
-            // Called internally when the cast sender api has been loaded.
-            initializeCastApi: function() {
-                var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-                var sessionRequest = new chrome.cast.SessionRequest(applicationID);
-                var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
-                    function(e) {
-                        // The sessionListener.
-                        this.triggerCasting(true);
-                        this._session = e;
-                        if (this._session.media.length) {
-                            this.onMediaDiscovered.call(this, 'onRequestSessionSuccess', this._session.media[0]);
-                        }
-                        // Bind the session update listener.
-                        this._session.addUpdateListener(this.sessionUpdateListener.bind(this));
-                        // Set interval for cast timeupdate.
-                        this._timeupdateInterval = setInterval(function() {
-                            if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
-                                this.triggerTimeupdate(this._castMedia.getEstimatedTime());
-                                this._bothPaused = false;
-                            } else {
-                                this._bothPaused = true;
-                            }
-                        }.bind(this), _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY);
-                        // Start playing on cast if playing locally.
-                        if (!this.paused) {
-                            this.play();
-                            this.pause(false);
-                        }
-                    }.bind(this),
-                    function(e) {
-                        // The receiverListener
-                        if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
-                            this.triggerAvailability(true);
-                        } else {
-                            this.triggerAvailability(false);
-                        }
-                    }.bind(this));
-                chrome.cast.initialize(apiConfig, function() {
-                    // The onInitSuccess method.
-                    /**
-                     * The `google-castable-video-initialized` event is fired when
-                     * the cast client API has been initialized.
-                     *
-                     * @event google-castable-video-initialized
-                     */
-                    this.fire('google-castable-video-initialized');
-                }.bind(this), function() {
-                    this.triggerError('INITIALIZE_ERROR');
-                });
-            },
-
-            /**
-             * Call this when the user clicks the cast icon.
-             * Opens the cast extension to create a session with the selected receiver.
-             *
-             * @method launchSessionManager
-             */
-            launchSessionManager: function() {
-                if (this._receiverAvailable) {
-                    // Create the session with the receiver.
-                    chrome.cast.requestSession(function(e) {
-                        // The onRequestSessionSuccess handler gets executed when we're connected.
-                        this.triggerCasting(true);
-                        this._session = e;
-                        this._session.addUpdateListener(this.sessionUpdateListener.bind(this));
-                        // If video is playing start playing on chromecast at same position.
-                        if (!this.paused) {
-                            this.play();
-                            this.pause(false);
-                        }
-                        // Set interval for cast timeupdate.
-                        this._timeupdateInterval = setInterval(function() {
-                            if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
-                                this.triggerTimeupdate(this._castMedia.getEstimatedTime());
-                                this._bothPaused = false;
-                            } else {
-                                this._bothPaused = true;
-                            }
-                        }.bind(this), _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY);
-                    }.bind(this));
-                }
-            },
-
-            // Internal method gets called when the cast session status changes.
-            sessionUpdateListener: function(isAlive) {
-                if (!isAlive) {
-                    this.triggerCasting(false);
-                    this.synchronizeMedia(true);
-                    // If video was playing on the receiver start playing locally.
-                    if (this._castMedia.playerState === 'PLAYING') {
-                        this.play();
-                    }
-                    this._castMedia = null;
-                    this._session = null;
-                    // The session died so remove the timeupdate interval.
-                    clearInterval(this._timeupdateInterval);
-                }
-            },
-
-            // Internal method gets called when media was set through `launchsession` 
-            // or was already playing on cast device.
-            onMediaDiscovered: function(how, media) {
-                this._castMedia = media;
-                if (how === 'loadMedia') {
-                    this.synchronizeMedia(false);
-                }
-            },
-
-            // Internal method to synchronize the media objects.
-            synchronizeMedia: function(castMaster) {
-                if (castMaster) {
-                    var position = this._castMedia.getEstimatedTime();
-                    this.currentTime = position;
-                } else {
-                    var position = this.currentTime;
-                    var req = new chrome.cast.media.SeekRequest();
-                    req.currentTime = position;
-                    this._castMedia.seek(req);
-                }
-            },
-
-            /**
-             * Call the `play` method from your controls.
-             *
-             * @method play
-             */
-            play: function(cast) {
-                if ((cast != undefined && !cast) || (!cast && !this._casting)) {
-                    this.super();
-                } else {
-                    // Handle cast media.
-                    if (!this._castMedia) {
-                        var mediaInfo = new chrome.cast.media.MediaInfo(this.currentSrc);
-                        // TODO get current type from currentsrc
-                        mediaInfo.contentType = 'video/mp4';
-                        var request = new chrome.cast.media.LoadRequest(mediaInfo);
-                        this._session.loadMedia(request,
-                            this.onMediaDiscovered.bind(this, 'loadMedia'),
-                            function(e) {
-                                this.triggerError('LOAD_MEDIA_ERROR');
-                            }.bind(this)
-                        );
-                    } else {
-                        this._castMedia.play();
-                    }
-                }
-            },
-
-            /**
-             * Call the `pause` method from your controls.
-             *
-             * @method pause
-             */
-            pause: function(cast) {
-                if ((cast != undefined && !cast) || (!cast && !this._casting)) {
-                    this.super();
-                } else {
-                    this._castMedia.pause();
-                }
-            },
-
-            /**
-             * The `google-castable-video-timeupdate` event is fired whenever
-             * the video's playback position changes.
-             *
-             * @event google-castable-video-timeupdate
-             * @param {Object} detail
-             *   @param {number} detail.currentTime The current video position.
-             */
-            triggerTimeupdate: function(position) {
-                this.fire('google-castable-video-timeupdate', {
-                    currentTime: position
-                });
-            },
-
-            /**
-             * The `google-castable-video-error` event is fired whenever
-             * an error occurs.
-             *
-             * @event google-castable-video-error
-             * @param {Object} detail
-             *   @param {string} detail.error The error type.
-             */
-            triggerError: function(description) {
-                this.fire('google-castable-video-error', {
-                    error: description
-                });
-            },
-
-            /**
-             * The `google-castable-video-receiver-status` event is fired whenever
-             * the availability of Chromecasts changes. Use this to show or hide the cast icon.
-             *
-             * @event google-castable-video-receiver-status
-             * @param {Object} detail
-             *   @param {bool} detail.available Shows if receivers are available.
-             */
-            triggerAvailability: function(availability) {
-                this._receiverAvailable = availability;
-                this.fire('google-castable-video-receiver-status', {
-                    available: availability
-                });
-            },
-
-            /**
-             * The `google-castable-video-casting` event is fired whenever the
-             * connection status to a Chromecast changes. Use this to change the cast icon.
-             *
-             * @event google-castable-video-casting
-             * @param {Object} detail
-             *   @param {bool} detail.casting True if connected.
-             */
-            triggerCasting: function(casting) {
-                this._casting = casting;
-                this.fire('google-castable-video-casting', {
-                    casting: casting
-                });
-            },
-
-            // Redirecting `seeked` event to Chromecast.
-            onSeeked: function() {
-                if (this._casting) {
-                    var req = new chrome.cast.media.SeekRequest();
-                    req.currentTime = this.currentTime;
-                    this._castMedia.seek(req);
-                }
-            },
-
-            // Redirecting `volumechange` event to Chromecast.
-            onVolumechange: function() {
-                if (this._casting) {
-                    var volume = new chrome.cast.Volume(this.volume, this.muted);
-                    var volumeRequest = new chrome.cast.media.VolumeRequest(volume);
-                    this._castMedia.setVolume(volumeRequest);
-                }
-            },
-
-            // Redirecting `timeupdate` event to `google-castable-video-timeupdate`.
-            onTimeupdate: function() {
-                this.triggerTimeupdate(this.currentTime);
-                this._bothPaused = this.paused;
+        ready: function() {
+          // Initialize the cast api.
+          window['__onGCastApiAvailable'] = function(loaded, errorInfo) {
+            if (loaded) {
+              this.initializeCastApi();
+            } else {
+              this.triggerError('INITIALIZE_ERROR');
             }
-        });
+          }.bind(this);
+        },
+
+        // Called internally when the cast sender api has been loaded.
+        initializeCastApi: function() {
+          var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+          var sessionRequest = new chrome.cast.SessionRequest(applicationID);
+          var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
+            function(e){
+              // The sessionListener.
+              this.triggerCasting(true);
+              this._session = e;
+              if (this._session.media.length) {
+                this.onMediaDiscovered.call(this, 'onRequestSessionSuccess', this._session.media[0]);
+              }
+              // Bind the session update listener.
+              this._session.addUpdateListener(this.sessionUpdateListener.bind(this));
+              // Set interval for cast timeupdate.
+              this._timeupdateInterval = setInterval(function(){
+                if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
+                  this.triggerTimeupdate(this._castMedia.getEstimatedTime());
+                  this._bothPaused = false;
+                } else {
+                  this._bothPaused = true;
+                }
+              }.bind(this), _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY);
+              // Start playing on cast if playing locally.
+              if (!this.paused) {
+                this.play();
+                this.pause(false);
+              }
+            }.bind(this),
+            function(e){
+              // The receiverListener
+              if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
+                this.triggerAvailability(true);
+              } else {
+                this.triggerAvailability(false);
+              }
+            }.bind(this));
+          chrome.cast.initialize(apiConfig, function(){
+            // The onInitSuccess method.
+            /**
+             * The `google-castable-video-initialized` event is fired when 
+             * the cast client API has been initialized.
+             *
+             * @event google-castable-video-initialized
+             */
+            this.fire('google-castable-video-initialized');
+          }.bind(this), function(){
+            this.triggerError('INITIALIZE_ERROR');
+          });
+        },
+
+        /**
+        * Call this when the user clicks the cast icon.
+        * Opens the cast extension to create a session with the selected receiver.
+        *
+        * @method launchSessionManager
+        */
+        launchSessionManager: function(){
+          if (this._receiverAvailable) {
+            // Create the session with the receiver.
+            chrome.cast.requestSession(function(e){
+              // The onRequestSessionSuccess handler gets executed when we're connected.
+              this.triggerCasting(true);
+              this._session = e;
+              this._session.addUpdateListener(this.sessionUpdateListener.bind(this));
+              // If video is playing start playing on chromecast at same position.
+              if (!this.paused) {
+                this.play();
+                this.pause(false);
+              }
+              // Set interval for cast timeupdate.
+              this._timeupdateInterval = setInterval(function(){
+                if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
+                  this.triggerTimeupdate(this._castMedia.getEstimatedTime());
+                  this._bothPaused = false;
+                } else {
+                  this._bothPaused = true;
+                }
+              }.bind(this), _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY);
+            }.bind(this));
+          }
+        },
+
+        // Internal method gets called when the cast session status changes.
+        sessionUpdateListener: function(isAlive){
+          if (!isAlive) {
+            this.triggerCasting(false);
+            this.synchronizeMedia(true);
+            // If video was playing on the receiver start playing locally.
+            if (this._castMedia.playerState === 'PLAYING') {
+              this.play();
+            }
+            this._castMedia = null;
+            this._session = null;
+            // The session died so remove the timeupdate interval.
+            clearInterval(this._timeupdateInterval);
+          }
+        },
+
+        // Internal method gets called when media was set through `launchsession` 
+        // or was already playing on cast device.
+        onMediaDiscovered: function(how, media) {
+          this._castMedia = media;
+          if (how === 'loadMedia') {
+            this.synchronizeMedia(false);
+          }
+        },
+
+        // Internal method to synchronize the media objects.
+        synchronizeMedia: function(castMaster){
+          if (castMaster) {
+            var position = this._castMedia.getEstimatedTime();
+            this.currentTime = position;
+          } else {
+            var position = this.currentTime;
+            var req = new chrome.cast.media.SeekRequest();
+            req.currentTime = position;
+            this._castMedia.seek(req);
+          }
+        },
+
+        /**
+         * Call the `play` method from your controls.
+         *
+         * @method play
+         */
+        play: function(cast){
+          if ((cast != undefined && !cast) || (!cast && !this._casting)) {
+            this.super();
+          } else {
+            // Handle cast media.
+            if (!this._castMedia) {
+              var mediaInfo = new chrome.cast.media.MediaInfo(this.currentSrc);
+              // TODO get current type from currentsrc
+              mediaInfo.contentType = 'video/mp4';
+              var request = new chrome.cast.media.LoadRequest(mediaInfo);
+              this._session.loadMedia(request,
+                this.onMediaDiscovered.bind(this, 'loadMedia'),
+                function(e){
+                  this.triggerError('LOAD_MEDIA_ERROR');
+                }.bind(this)
+              );
+            } else {
+              this._castMedia.play();
+            }
+          }
+        },
+
+        /**
+         * Call the `pause` method from your controls.
+         *
+         * @method pause
+         */
+        pause: function(cast){
+          if ((cast != undefined && !cast) || (!cast && !this._casting)) {
+            this.super();
+          } else {
+            this._castMedia.pause();
+          }
+        },
+
+        /**
+         * The `google-castable-video-timeupdate` event is fired whenever 
+         * the video's playback position changes.
+         *
+         * @event google-castable-video-timeupdate
+         * @param {Object} detail
+         *   @param {number} detail.currentTime The current video position.
+         */
+         triggerTimeupdate: function(position) {
+          this.fire('google-castable-video-timeupdate', { currentTime: position });
+        },
+
+        /**
+         * The `google-castable-video-error` event is fired whenever 
+         * an error occurs.
+         *
+         * @event google-castable-video-error
+         * @param {Object} detail
+         *   @param {string} detail.error The error type.
+         */
+        triggerError: function(description) {
+          this.fire('google-castable-video-error', { error: description });
+        },
+
+        /**
+         * The `google-castable-video-receiver-status` event is fired whenever 
+         * the availability of Chromecasts changes. Use this to show or hide the cast icon.
+         *
+         * @event google-castable-video-receiver-status
+         * @param {Object} detail
+         *   @param {bool} detail.available Shows if receivers are available.
+         */
+        triggerAvailability: function(availability) {
+          this._receiverAvailable = availability;
+          this.fire('google-castable-video-receiver-status', { available: availability });
+        },
+
+        /**
+         * The `google-castable-video-casting` event is fired whenever the
+         * connection status to a Chromecast changes. Use this to change the cast icon.
+         *
+         * @event google-castable-video-casting
+         * @param {Object} detail
+         *   @param {bool} detail.casting True if connected.
+         */
+        triggerCasting: function(casting) {
+          this._casting = casting;
+          this.fire('google-castable-video-casting', { casting: casting });
+        },
+
+        // Redirecting `seeked` event to Chromecast.
+        onSeeked: function(){
+          if (this._casting) {
+            var req = new chrome.cast.media.SeekRequest();
+            req.currentTime = this.currentTime;
+            this._castMedia.seek(req);
+          }
+        },
+
+        // Redirecting `volumechange` event to Chromecast.
+        onVolumechange: function(){
+          if (this._casting) {
+            var volume = new chrome.cast.Volume(this.volume, this.muted);
+            var volumeRequest = new chrome.cast.media.VolumeRequest(volume);
+            this._castMedia.setVolume(volumeRequest);
+          }
+        },
+
+        // Redirecting `timeupdate` event to `google-castable-video-timeupdate`.
+        onTimeupdate: function(){
+          this.triggerTimeupdate(this.currentTime);
+          this._bothPaused = this.paused;
+        }
+      });
     })();
-    </script>
+  </script>
 
 </polymer-element>
+<iframe src="./google-castable-video_files/api_iframe.html" style="display:none"></iframe><div><div id="SL_button" class="ImTranslatorLogo" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/imtranslator-s.png);"></div><div id="SL_shadow_translation_result2" style="display: none;"></div><div id="SL_shadow_translator" style="display: none;"><div id="SL_planshet" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/bg2.png) rgb(244, 245, 245);"><div id="SL_TB"><div id="bubblelogo" class="ImTranslatorLogo" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/imtranslator-s.png);"></div><table cellspacing="1" border="0" id="SL_tables"><tbody><tr><td class="SL_td" align="left" width="20%"><div id="SL_lng_from">English&nbsp;»</div></td><td class="SL_td" align="left" width="20%"><select id="SL_lng_to"><option value="af">Afrikaans</option><option value="sq">Albanian</option><option value="ar">Arabic</option><option value="hy">Armenian</option><option value="az">Azerbaijani</option><option value="eu">Basque</option><option value="bn">Bengali</option><option value="be">Belarusian</option><option value="bg">Bulgarian</option><option value="ca">Catalan</option><option value="zh-CN">Chinese&nbsp;(Simp)</option><option value="zh-TW">Chinese&nbsp;(Trad)</option><option value="hr">Croatian</option><option value="cs">Czech</option><option value="da">Danish</option><option value="nl">Dutch</option><option value="en">English</option><option value="eo">Esperanto</option><option value="et">Estonian</option><option value="tl">Filipino</option><option value="fi">Finnish</option><option value="fr">French</option><option value="gl">Galician</option><option value="ka">Georgian</option><option value="de">German</option><option value="el">Greek</option><option value="gu">Gujarati</option><option value="ht">Haitian&nbsp;Creole</option><option value="iw">Hebrew</option><option value="hi">Hindi</option><option value="hu">Hungarian</option><option value="is">Icelandic</option><option value="id">Indonesian</option><option value="ga">Irish</option><option value="it">Italian</option><option value="ja">Japanese</option><option value="kn">Kannada</option><option value="ko">Korean</option><option value="lo">Lao</option><option value="la">Latin</option><option value="lv">Latvian</option><option value="lt">Lithuanian</option><option value="mk">Macedonian</option><option value="ms">Malay</option><option value="mt">Maltese</option><option value="no">Norwegian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="sr">Serbian</option><option value="sk">Slovak</option><option value="sl">Slovenian</option><option selected="" value="es">Spanish</option><option value="sw">Swahili</option><option value="sv">Swedish</option><option value="ta">Tamil</option><option value="te">Telugu</option><option value="th">Thai</option><option value="tr">Turkish</option><option value="uk">Ukrainian</option><option value="ur">Urdu</option><option value="vi">Vietnamese</option><option value="cy">Welsh</option><option value="yi">Yiddish</option></select></td><td class="SL_td" width="13%" align="center">&nbsp;</td><td class="SL_td" width="8%" align="center"><div id="SL_TTS_voice" title="Listen to the translation" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/tts-voice.png);"></div></td><td class="SL_td" width="8%" align="center"><div id="SL_copy" title="Select text" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/copy_hand.png);"></div></td><td class="SL_td" width="8%" align="center"><div id="SL_bbl_font_patch" onclick="alert(&#39;Not available for dictionary&#39;);"></div><div id="SL_bbl_font" title="Font size" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/font-off.png);"></div></td><td class="SL_td" width="8%" align="center"><div id="SL_TH" title="Translation history" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/history.png);"></div></td><td class="SL_td" width="5%"></td><td class="SL_td" width="8%" align="right"><div id="SL_pin" title="Pin pup-up bubble" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/pin-off.png);"></div></td></tr></tbody></table></div></div><div id="SL_shadow_translation_result" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/bg.png) rgb(255, 255, 255);"></div><div id="SL_bbl_donate" title="Make a small contribution" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/donate2.png);"></div><div id="SL_Balloon_options" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/bg3.png) rgb(244, 245, 245);"><a href="chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/options-bbl.html" target="_blank" class="SL_options" title="Show options">Options</a>&nbsp;:&nbsp;<a href="chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/history.html" class="SL_options" title="Translation history" target="_blank">History</a>&nbsp;:&nbsp;<a href="http://about.imtranslator.net/add-ons/chrome-extension/" target="_blank" class="SL_options" title="ImTranslator Help">Help</a>&nbsp;:&nbsp;<a href="chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/feedback.html" class="SL_options" title="Feedback" target="_blank">Feedback</a></div><div id="SL_player"></div><div id="SL_alert100" style="background: url(chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh/img/util/bg2.png);">Text-to-speech function is limited to 100 characters</div></div></div></body></html>
