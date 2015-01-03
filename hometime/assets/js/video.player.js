@@ -122,7 +122,7 @@ Polymer('video-player', {
                 self.currentCastState = self.castStates.unavailable;
 
             else{
-                self.currentplayState = self.castStates.disconnected;
+                self.currentCastState = self.castStates.disconnected;
             }
         });
 
@@ -455,8 +455,8 @@ Polymer('video-player', {
                 tracks[i].mode = "showing";
             }
         } else {
-            for (var i = 0; i < tracks.length; i++) {
-                tracks[i].mode = "hidden";
+            for (var j = 0; j < tracks.length; j++) {
+                tracks[j].mode = "hidden";
             }
         }
     }
