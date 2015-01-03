@@ -4,6 +4,8 @@ Polymer('video-player', {
         console.log('logger');
     },
 
+    deviceName: null,
+
     initializedController: false,
 
     isFullscreen: false,
@@ -87,12 +89,13 @@ Polymer('video-player', {
 
         volumer.isShowing = false;
 
-        console.log('receiverAvailable=', vid.receiverAvailable);
-
         if (!vid.receiverAvailable)
 
             self.currentCastState = self.castStates.unavailable;
 
+        vid.addEventListener('media-initialized-on-chromecast', function(e) {
+            self.deviceName = e.detail.deviceName;
+        });
 
         //IMPORTANT use this to get the currentTime even when casting
         vid.addEventListener('google-castable-video-timeupdate', function(e) {
@@ -107,7 +110,7 @@ Polymer('video-player', {
         // show cast icon when discover available chromecast device
         vid.addEventListener('google-castable-video-receiver-status', function(e) {
 
-            console.log('receiverAvailable=', vid.receiverAvailable);
+            console.log('receiver =', vid.receiverAvailable);
 
             if (!vid.receiverAvailable)
 
@@ -154,6 +157,8 @@ Polymer('video-player', {
         // play/pause
 
         playButton.addEventListener('tap', function() {
+
+            self._deviceName = vid._deviceName;
 
             if (self.currentplayState == self.playStates.pausing) {
 

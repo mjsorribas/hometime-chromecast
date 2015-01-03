@@ -47,6 +47,7 @@ html /deep/ [touch-action="manipulation"]{ -ms-touch-action: manipulation; touch
       var _GOOGLE_CASTABLE_VIDEO_TIMEUPDATE_DELAY = 250;
 
       Polymer({
+
         /**
          * The real paused state for local and cast playback.
          * 
@@ -259,18 +260,21 @@ html /deep/ [touch-action="manipulation"]{ -ms-touch-action: manipulation; touch
           if ((cast != undefined && !cast) || (!cast && !this._casting)) {
             this.super();
           } else {
+            
             // Handle cast media.
             if (!this._castMedia) {
               var mediaInfo = new chrome.cast.media.MediaInfo(this.currentSrc);
               // TODO get current type from currentsrc
               mediaInfo.contentType = 'video/mp4';
               var request = new chrome.cast.media.LoadRequest(mediaInfo);
-              this._session.loadMedia(request,
-                this.onMediaDiscovered.bind(this, 'loadMedia'),
-                function(e){
+              this._session.loadMedia(request, this.onMediaDiscovered.bind(this, 'loadMedia'), function(e){
                   this.triggerError('LOAD_MEDIA_ERROR');
                 }.bind(this)
               );
+              window._a = this;
+              var _deviceName = this.session.receiver.friendlyName;
+              this.fire('media-initialized-on-chromecast',{ deviceName : _deviceName });
+
             } else {
               this._castMedia.play();
             }

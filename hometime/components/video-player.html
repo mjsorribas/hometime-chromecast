@@ -42,7 +42,7 @@
             <div flex vertical layout class="playlist-wrapper">
                 <table class="playlist-control">
                     <tr>
-                        <td colspan="2">Now playing</td>
+                        <td colspan="2">Now playing {{deviceName.length ? 'on ' + deviceName : ''}}</td>
                         <td width="80">
                             <core-icon-button id="prev" class="icon-prev" icon="av:skip-previous"></core-icon-button>
                             <core-icon-button id="next" class="icon-next" icon="av:skip-next"></core-icon-button>
