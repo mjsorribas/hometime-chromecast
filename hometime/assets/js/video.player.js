@@ -166,7 +166,7 @@ Polymer('video-player', {
 
         // play/pause
 
-        playButton.addEventListener('tap', function() {
+        playButton.addEventListener('click', function() {
 
             self._deviceName = vid._deviceName;
 
@@ -198,21 +198,29 @@ Polymer('video-player', {
         });
 
         // next
-        nextButton.addEventListener('tap', function() {
+        nextButton.addEventListener('click', function(e) {
 
-            if (self.queues.length - 1 - self.nowPlayingIndex) {
+            e.stopPropagation();
+
+            e.preventDefault();
+
+            if (self.queues.length - 1 - self.nowPlayingIndex > 0) {
 
                 self.gotoVideo(self.nowPlayingIndex + 1);
+
+                return;
 
             } else {
 
                 self.gotoVideo(0);
+
+                return;
             }
 
         });
 
         // previous
-        prevButton.addEventListener('tap', function() {
+        prevButton.addEventListener('click', function() {
 
             if (self.nowPlayingIndex) {
 
@@ -345,15 +353,10 @@ Polymer('video-player', {
 
     ready: function() {
 
-        var self = this;
+        console.log('check init');
+        
+        this.checkInitialize();
 
-        console.log('video-player ready');
-
-        setTimeout(function() {
-
-            self.checkInitialize();
-
-        }, 200);
     },
     // click play this
 
@@ -376,7 +379,7 @@ Polymer('video-player', {
 
         var self = this;
 
-        self.checkInitialize();
+        // self.checkInitialize();
 
         // pause first
         var vid = this.$.htmlvideo;
