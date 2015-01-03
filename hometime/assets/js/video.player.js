@@ -61,6 +61,8 @@ Polymer('video-player', {
 
         var vid = this.$.htmlvideo;
 
+        window.player = this;
+
         var playButton = this.$.play;
 
         var nextButton = this.$.next;
@@ -82,6 +84,8 @@ Polymer('video-player', {
         progressSlider.isMousedown = false;
 
         vid.duration = 0;
+
+        vid.isPlayOnTV = false;
 
         progressSlider.value = 0;
 
@@ -138,8 +142,14 @@ Polymer('video-player', {
 
         vid.addEventListener('pause', function() {
 
-            self.currentplayState = self.playStates.pausing;
+            if (vid._castMedia !== null && vid._castMedia.playerState === 'PLAYING') {
 
+                self.currentplayState = self.playStates.playing;
+
+            } else {
+
+                self.currentplayState = self.playStates.pausing;
+            }
         });
 
         vid.addEventListener('ended', function(e) {
@@ -160,17 +170,30 @@ Polymer('video-player', {
 
             self._deviceName = vid._deviceName;
 
-            if (self.currentplayState == self.playStates.pausing) {
+            if (vid._castMedia !== null) {
 
-                vid.play();
+                if (vid._castMedia.playerState == 'PLAYING') {
 
-                // self.currentplayState = self.playStates.playing;
+                    vid.pause();
 
+                    self.currentplayState = 0;
+
+                } else if (vid._castMedia.playerState == 'PAUSED') {
+
+                    vid.play();
+
+                    self.currentplayState = 1;
+                }
             } else {
 
-                vid.pause();
+                if (self.currentplayState == self.playStates.pausing) {
 
-                // self.currentplayState = self.playStates.pausing;
+                    vid.play();
+
+                } else {
+
+                    vid.pause();
+                }
             }
         });
 
