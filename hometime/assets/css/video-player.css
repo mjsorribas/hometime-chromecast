@@ -24,10 +24,10 @@ core-item[icon="settings-remote"]::shadow core-icon {
     background-color: rgba(0, 0, 0, 0.5);
     top: -5px;
 }
-.mask-control core-icon {
+core-icon.icon-caption.on, .mask-control core-icon.icon-cast, .mask-control core-icon.icon-volume, .mask-control core-icon.icon-play {
     color: #FF9500;
 }
-core-icon.icon-fullscreen {
+core-icon.icon-fullscreen, core-icon.icon-caption {
     color: #fff;
 }
 .video, .progress-block, #progress {

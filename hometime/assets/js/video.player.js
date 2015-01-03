@@ -6,6 +6,8 @@ Polymer('video-player', {
 
     deviceName: null,
 
+    showCaption: false,
+
     initializedController: false,
 
     isFullscreen: false,
@@ -93,9 +95,9 @@ Polymer('video-player', {
 
         volumer.isShowing = false;
 
-        if (!vid.receiverAvailable)
+        if (vid.receiverAvailable)
 
-            self.currentCastState = self.castStates.unavailable;
+            self.currentCastState = self.castStates.disconnected;
 
         vid.addEventListener('media-initialized-on-chromecast', function(e) {
             self.deviceName = e.detail.deviceName;
@@ -108,17 +110,20 @@ Polymer('video-player', {
 
                 progressSlider.value = e.detail.currentTime * (100 / vid.duration);
             }
+
             self.currentSTimeFormated = formatTime(vid.bothCurrentTime);
         });
 
         // show cast icon when discover available chromecast device
         vid.addEventListener('google-castable-video-receiver-status', function(e) {
 
-            console.log('receiver =', vid.receiverAvailable);
-
             if (!vid.receiverAvailable)
 
                 self.currentCastState = self.castStates.unavailable;
+
+            else{
+                self.currentplayState = self.castStates.disconnected;
+            }
         });
 
         //listen for casting event to change icon
@@ -353,8 +358,6 @@ Polymer('video-player', {
 
     ready: function() {
 
-        console.log('check init');
-        
         this.checkInitialize();
 
     },
@@ -438,6 +441,24 @@ Polymer('video-player', {
             self.queues.splice(index, 1);
 
         }, 450);
+    },
+    showHideCaption: function() {
+
+        var self = this;
+
+        self.showCaption = !self.showCaption;
+
+        var tracks = self.$.htmlvideo.textTracks;
+
+        if (self.showCaption) {
+            for (var i = 0; i < tracks.length; i++) {
+                tracks[i].mode = "showing";
+            }
+        } else {
+            for (var i = 0; i < tracks.length; i++) {
+                tracks[i].mode = "hidden";
+            }
+        }
     }
 });
 
