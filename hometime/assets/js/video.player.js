@@ -100,18 +100,33 @@ Polymer('video-player', {
             self.currentCastState = self.castStates.disconnected;
 
         vid.addEventListener('media-initialized-on-chromecast', function(e) {
+
             self.deviceName = e.detail.deviceName;
         });
 
         //IMPORTANT use this to get the currentTime even when casting
         vid.addEventListener('google-castable-video-timeupdate', function(e) {
 
+            // this first:
             if (!progressSlider.isMousedown) {
 
                 progressSlider.value = e.detail.currentTime * (100 / vid.duration);
             }
 
             self.currentSTimeFormated = formatTime(vid.bothCurrentTime);
+
+            // if pause on tv and state playing
+            if (vid._castMedia !== null) {
+
+                if (vid._bothPaused && self.currentplayState) {
+
+                    self.currentplayState = 0;
+
+                } else if (!vid._bothPaused && !self.currentplayState) {
+
+                    self.currentplayState = 1;
+                }
+            }
         });
 
         // show cast icon when discover available chromecast device
@@ -121,7 +136,7 @@ Polymer('video-player', {
 
                 self.currentCastState = self.castStates.unavailable;
 
-            else{
+            else {
                 self.currentCastState = self.castStates.disconnected;
             }
         });
@@ -157,17 +172,39 @@ Polymer('video-player', {
             }
         });
 
-        vid.addEventListener('ended', function(e) {
+        vid.addEventListener('ended', function() {
 
-            if (self.queues.length - 1 - self.nowPlayingIndex) {
+            console.log('ended');
 
-                self.gotoVideo(self.nowPlayingIndex + 1);
+            var next = self.queues.length - 1 - self.nowPlayingIndex ? self.nowPlayingIndex + 1 : 0;
+
+            // if connected to tv and paused
+            if (vid.bothPaused && vid._castMedia !== null) {
+
+                var src = window.location.host + self.queues[next].src;
+
+                var mediaInfo = new chrome.cast.media.MediaInfo(src);
+                // TODO get current type from currentsrc
+                mediaInfo.contentType = 'video/mp4';
+
+                var request = new chrome.cast.media.LoadRequest(mediaInfo);
+
+                vid._session.loadMedia(request, vid.onMediaDiscovered.bind(vid, 'loadMedia'), function(e) {
+                    vid.triggerError('LOAD_MEDIA_ERROR');
+                }.bind(vid));
+
+                self.nowPlayingIndex = next;
+
+                vid.play();
+
+                console.log('auto next on tv');
 
             } else {
 
-                self.gotoVideo(0);
+                self.gotoVideo(next);
             }
-        });
+
+        }, false);
 
         // play/pause
 
@@ -442,6 +479,7 @@ Polymer('video-player', {
 
         }, 450);
     },
+
     showHideCaption: function() {
 
         var self = this;

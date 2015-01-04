@@ -130,6 +130,7 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               this.triggerCasting(true);
               this._session = e;
               if (this._session.media.length) {
+                console.log('assign media on initialize api');
                 this.onMediaDiscovered.call(this, 'onRequestSessionSuccess', this._session.media[0]);
               }
               // Bind the session update listener.
@@ -248,15 +249,17 @@ Instead of listening for the video element's `timeupdate` event please listen fo
          */
         play: function(cast){
           if ((cast != undefined && !cast) || (!cast && !this._casting)) {
+            // play on local
             this.super();
           } else {
-            
+            // casting
             // Handle cast media.
             if (!this._castMedia) {
               var mediaInfo = new chrome.cast.media.MediaInfo(this.currentSrc);
               // TODO get current type from currentsrc
               mediaInfo.contentType = 'video/mp4';
               var request = new chrome.cast.media.LoadRequest(mediaInfo);
+              console.log('assign media on play method');
               this._session.loadMedia(request, this.onMediaDiscovered.bind(this, 'loadMedia'), function(e){
                   this.triggerError('LOAD_MEDIA_ERROR');
                 }.bind(this)
@@ -264,7 +267,25 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               var _deviceName = this.session.receiver.friendlyName;
               this.fire('media-initialized-on-chromecast',{ deviceName : _deviceName });
 
+            } else if (this.currentSrc != this._castMedia.media.contentId) {
+              var self = this;
+              var req = new chrome.cast.media.StopRequest();
+              this._castMedia.stop(req, function(){
+                // done stop
+                var mediaInfo = new chrome.cast.media.MediaInfo(self.currentSrc);
+                // TODO get current type from currentsrc
+                mediaInfo.contentType = 'video/mp4';
+                var request = new chrome.cast.media.LoadRequest(mediaInfo);
+                console.log('assign media on play method');
+                self._session.loadMedia(request, self.onMediaDiscovered.bind(self, 'loadMedia'), function(e){
+                    this.triggerError('LOAD_MEDIA_ERROR');
+                  }.bind(self)
+                );
+              }, function(){
+                console.log('stop error');
+              });
             } else {
+              // already has media
               this._castMedia.play();
             }
           }
