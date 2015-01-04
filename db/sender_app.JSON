@@ -23,6 +23,11 @@
       "dataUrl": "/library/karaokes"
     },
     {
+      "label": "funny Videos",
+      "icon": "hardware:keyboard-alt",
+      "dataUrl": "/library/funny"
+    },
+    {
       "label": "Others",
       "icon": "icons:turned-in",
       "dataUrl": "/library/others"

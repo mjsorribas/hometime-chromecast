@@ -44,7 +44,10 @@
             <div flex vertical layout class="playlist-wrapper">
                 <table class="playlist-control">
                     <tr>
-                        <td colspan="2">Now playing {{deviceName.length ? 'on ' :''}}<b>{{deviceName}}</b>
+                        <td colspan="2">
+                            Now playing {{deviceName.length ? 'on ' :''}}
+                            <core-icon icon="hardware:chromecast"></core-icon>
+                            <b>{{deviceName}}</b>
                         </td>
                         <td width="80">
                             <core-icon-button id="prev" class="icon-prev" icon="av:skip-previous"></core-icon-button>

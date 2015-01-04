@@ -14,6 +14,8 @@ var app = express();
 
 
 
+
+
 // ************* MEDIA SERVER *************
 
 // read media server config infomations
@@ -31,7 +33,14 @@ app.get("/media/*", vidStreamer);
 
 
 
-// ************* PUBLIC WEBAPP (CHROMECAST SENDER APP) *************
+// ************* MEDIA MANAGER *************
+app.use('/m', express.static(__dirname + '/media-manager'));
+
+
+
+
+
+// ************* CHROMECAST SENDER APP *************
 
 // load sender app beginer infomation
 var db_sender_app = new JsonDB('./db/sender_app', true, true).getData('/');
@@ -54,7 +63,6 @@ app.use(methodOverride()); // simulate DELETE and PUT
 app.get('/app', function(req, res) {
 
     res.json(db_sender_app);
-
 });
 
 var media_db = new JsonDB('./db/media', true, true);
@@ -73,6 +81,8 @@ app.get('/library/*', function(req, res) {
 });
 
 // RUN SERVER
+
 app.listen(3000);
+
 
 console.log("Hometime mediaser running on port 3000");

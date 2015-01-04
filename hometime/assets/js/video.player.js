@@ -106,7 +106,6 @@ Polymer('video-player', {
 
         //IMPORTANT use this to get the currentTime even when casting
         vid.addEventListener('google-castable-video-timeupdate', function(e) {
-
             // this first:
             if (!progressSlider.isMousedown) {
 
@@ -173,8 +172,6 @@ Polymer('video-player', {
         });
 
         vid.addEventListener('ended', function() {
-
-            console.log('ended');
 
             var next = self.queues.length - 1 - self.nowPlayingIndex ? self.nowPlayingIndex + 1 : 0;
 

@@ -42,9 +42,6 @@ var dirTree = function(filename) {
                 var title = path.basename(basename, fileType);
                 var dirname = path.dirname(filename);
                 autoGenAndRename(filename, title, dirname, fileType, stats.atime);
-
-            } else {
-                console.log('already index file', filename);
             }
         }
     }
@@ -68,6 +65,8 @@ var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
             autoGenAndRename(filename, title, dirname, fileType, atime);
 
         } else {
+            
+            console.log('found new media file: ', title, fileType);
 
             var media = {
                 'title': title,
@@ -93,7 +92,7 @@ if (module.parent === undefined) {
 }
 
 // BEGIN SEARCH in FOLDER and IMPORT to DB
-// dirTree(__dirname + '/media');
+dirTree(__dirname + '/media');
 
 // 
 // 

@@ -130,14 +130,17 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               this.triggerCasting(true);
               this._session = e;
               if (this._session.media.length) {
-                console.log('assign media on initialize api');
+                console.log('if has media playing on tv');
                 this.onMediaDiscovered.call(this, 'onRequestSessionSuccess', this._session.media[0]);
               }
               // Bind the session update listener.
               this._session.addUpdateListener(this.sessionUpdateListener.bind(this));
               // Set interval for cast timeupdate.
               this._timeupdateInterval = setInterval(function(){
-                if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
+                if (this._castMedia && this._castMedia.playerState === 'IDLE') {
+                  console.log('now idle 1');
+                }
+                else if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
                   this.triggerTimeupdate(this._castMedia.getEstimatedTime());
                   this._bothPaused = false;
                 } else {
@@ -148,6 +151,7 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               if (!this.paused) {
                 this.play();
                 this.pause(false);
+                console.log('paused on local');
               }
             }.bind(this),
             function(e){
@@ -216,6 +220,7 @@ Instead of listening for the video element's `timeupdate` event please listen fo
             this._castMedia = null;
             this._session = null;
             // The session died so remove the timeupdate interval.
+            console.log('clear session');
             clearInterval(this._timeupdateInterval);
           }
         },
@@ -259,7 +264,7 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               // TODO get current type from currentsrc
               mediaInfo.contentType = 'video/mp4';
               var request = new chrome.cast.media.LoadRequest(mediaInfo);
-              console.log('assign media on play method');
+              // play first video
               this._session.loadMedia(request, this.onMediaDiscovered.bind(this, 'loadMedia'), function(e){
                   this.triggerError('LOAD_MEDIA_ERROR');
                 }.bind(this)
@@ -269,21 +274,32 @@ Instead of listening for the video element's `timeupdate` event please listen fo
 
             } else if (this.currentSrc != this._castMedia.media.contentId) {
               var self = this;
-              var req = new chrome.cast.media.StopRequest();
-              this._castMedia.stop(req, function(){
-                // done stop
-                var mediaInfo = new chrome.cast.media.MediaInfo(self.currentSrc);
-                // TODO get current type from currentsrc
-                mediaInfo.contentType = 'video/mp4';
-                var request = new chrome.cast.media.LoadRequest(mediaInfo);
-                console.log('assign media on play method');
+              
+              var mediaInfo = new chrome.cast.media.MediaInfo(self.currentSrc);
+              // TODO get current type from currentsrc
+              mediaInfo.contentType = 'video/mp4';
+              var request = new chrome.cast.media.LoadRequest(mediaInfo);
+              // play next video
+              // if IDE 
+              if (this._castMedia.playerState == 'IDLE') {
                 self._session.loadMedia(request, self.onMediaDiscovered.bind(self, 'loadMedia'), function(e){
                     this.triggerError('LOAD_MEDIA_ERROR');
                   }.bind(self)
                 );
-              }, function(){
-                console.log('stop error');
-              });
+              } else {
+                // stop first
+                var req = new chrome.cast.media.StopRequest();
+                this._castMedia.stop(req, function(){
+                  // done stop
+                  // play next video
+                  self._session.loadMedia(request, self.onMediaDiscovered.bind(self, 'loadMedia'), function(e){
+                        this.triggerError('LOAD_MEDIA_ERROR');
+                      }.bind(self)
+                    );
+                  }, function(){
+                    console.log('stop error');
+                });
+              }
             } else {
               // already has media
               this._castMedia.play();
@@ -299,7 +315,7 @@ Instead of listening for the video element's `timeupdate` event please listen fo
         pause: function(cast){
           if ((cast != undefined && !cast) || (!cast && !this._casting)) {
             this.super();
-          } else {
+          } else if (this._castMedia !== null) {
             this._castMedia.pause();
           }
         },
