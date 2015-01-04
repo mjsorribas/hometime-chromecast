@@ -117,11 +117,19 @@ Polymer('video-player', {
             // if pause on tv and state playing
             if (vid._castMedia !== null) {
 
-                if (vid._bothPaused && self.currentplayState) {
+                if (vid._bothPaused) {
 
-                    self.currentplayState = 0;
+                    if (vid._castMedia.playerState === 'IDLE') {
 
-                } else if (!vid._bothPaused && !self.currentplayState) {
+                        nextButton.click();
+
+                    }
+                    else if (self.currentplayState) {
+
+                        self.currentplayState = 0;
+                    }
+
+                } else if (!self.currentplayState) {
 
                     self.currentplayState = 1;
                 }
@@ -193,8 +201,6 @@ Polymer('video-player', {
                 self.nowPlayingIndex = next;
 
                 vid.play();
-
-                console.log('auto next on tv');
 
             } else {
 

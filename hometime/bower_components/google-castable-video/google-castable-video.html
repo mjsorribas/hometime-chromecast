@@ -138,7 +138,10 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               // Set interval for cast timeupdate.
               this._timeupdateInterval = setInterval(function(){
                 if (this._castMedia && this._castMedia.playerState === 'IDLE') {
-                  console.log('now idle 1');
+                  if (!this._bothPaused) {
+                    this._bothPaused = true;
+                    this.triggerTimeupdate(this._castMedia.getEstimatedTime());
+                  }
                 }
                 else if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
                   this.triggerTimeupdate(this._castMedia.getEstimatedTime());
@@ -197,7 +200,13 @@ Instead of listening for the video element's `timeupdate` event please listen fo
               }
               // Set interval for cast timeupdate.
               this._timeupdateInterval = setInterval(function(){
-                if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
+                if (this._castMedia && this._castMedia.playerState === 'IDLE') {
+                  if (!this._bothPaused) {
+                    this._bothPaused = true;
+                    this.triggerTimeupdate(this._castMedia.getEstimatedTime());
+                  }
+                }
+                else if (this._castMedia && this._castMedia.playerState === 'PLAYING') {
                   this.triggerTimeupdate(this._castMedia.getEstimatedTime());
                   this._bothPaused = false;
                 } else {
