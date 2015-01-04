@@ -110,11 +110,17 @@ Instead of listening for the video element's `timeupdate` event please listen fo
 
         ready: function() {
           // Initialize the cast api.
-          this.initializeCastApi();
           window['__onGCastApiAvailable'] = function(loaded, errorInfo) {
             if (loaded) {
               this.initializeCastApi();
             } else {
+
+              setTimeout(function(){
+
+                this.initializeCastApi();
+
+              }, 1000);
+              
               this.triggerError('INITIALIZE_ERROR');
             }
           }.bind(this);
