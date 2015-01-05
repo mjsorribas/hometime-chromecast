@@ -38,5 +38,9 @@ module.exports = {
 
             console.error(error);
         }
+    },
+
+    getUser: function(uname, password) {
+        
     }
 };

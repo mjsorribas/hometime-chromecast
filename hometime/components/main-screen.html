@@ -46,14 +46,15 @@
 
                 <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{selectMenu}}">
                     <template repeat="{{data.library}}">
-                        <core-item class="smooth-trans" label="{{label}}" icon="{{icon}}"></core-item>
+                        <paper-item class="smooth-trans" label="{{label}}" icon="{{icon}}">
+                            </core-paper>
                     </template>
                 </core-selector>
-
-                <!-- <core-selector class="menu">
-                    <core-item label="demo" icon="cloud-queue"></core-item>
-                    <core-item label="Account" icon="account-circle"></core-item>
-                </core-selector> -->
+                <core-menu class="user-nav">
+                    <paper-item icon="account-circle" label="Login"></paper-item>
+                    <paper-item icon="account-circle" label="Account"></paper-item>
+                    <paper-item icon="send-money" label="Sign Out"></paper-item>
+                </core-menu>
             </core-header-panel>
 
 
@@ -65,7 +66,7 @@
 
 
             <!-- change mode menu -->
-            <my-menu-button tool icon="more-vert" selected="{{currentMode}}" valign="top" halign="right">
+            <my-menu-button tool class="more-menu" icon="more-vert" selected="{{currentMode}}" valign="top" halign="right">
                 <paper-item icon="list" label="Playlist"></paper-item>
                 <paper-item icon="av:queue" label="Playing"></paper-item>
             </my-menu-button>

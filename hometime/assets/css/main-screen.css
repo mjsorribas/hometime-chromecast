@@ -63,15 +63,18 @@ core-scaffold::shadow core-toolbar {
 .menu-title {
     color: #FFE0B2;
 }
-.menu /deep/ core-icon {
+.menu /deep/ core-icon, .user-nav /deep/ core-icon {
     fill: #ccc;
+    margin: 0 16px 0 4px;
 }
-.menu core-item {
+.menu paper-item, .user-nav paper-item, my-menu-button paper-item {
     padding-left: 10px;
     cursor: pointer;
     color: #666;
+    height: 45px;
+    line-height: 45px;
 }
-.menu core-item.core-selected {
+.menu paper-item.core-selected {
     background-color: #EEE;
     border-left: 2px solid #FB8C00;
 }
@@ -82,6 +85,10 @@ my-menu-button /deep/ #dropdown {
     top: 0;
     bottom: auto !important;
     box-shadow: 0 0 5px #5C5C5C;
+}
+.user-nav {
+    margin: 0;
+    border-top: 1px solid #eee;
 }
 /* list container */
 

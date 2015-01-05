@@ -1,0 +1,12 @@
+{
+    "toan@hometime.com": {
+        "name": "Toan",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "avatar": "/media/avatars/toan-hometime.com.jpg"
+    },
+    "nguyen@hometime.com": {
+        "name": "Nguyen",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "avatar": "/media/avatars/nguyen-hometime.com.jpg"
+    }
+}
