@@ -24,7 +24,7 @@ module.exports = {
 
                     vid.poster = base + id + '.jpg';
 
-                    vid.src = base + id + vid.fileType;
+                    vid.src = base + id + '?V';
 
                     vid.subtitle = base + id + '.vtt';
 
@@ -41,6 +41,6 @@ module.exports = {
     },
 
     getUser: function(uname, password) {
-        
+
     }
 };

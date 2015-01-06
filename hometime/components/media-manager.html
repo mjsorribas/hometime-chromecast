@@ -22,6 +22,7 @@
 
 
 <!-- my components -->
+<link rel="import" href="../components/video-item.html">
 
 
 <polymer-element name="media-manager">
@@ -30,26 +31,27 @@
 
         <link rel="stylesheet" href="../assets/css/media-manager.css">
 
-        <!-- mode waterfall-tall will show large header -->
+        <core-ajax id="data_hometime" auto url="/app" response="{{data}}" handleAs="json"></core-ajax>
 
         <core-scaffold responsiveWidth="600px">
 
             <!-- leftbar -->
             <core-header-panel navigation flex>
                 <core-toolbar>
-                    <span flex class="menu-title">Menu Title</span>
+                    <span flex class="menu-title">Select a library</span>
                 </core-toolbar>
                 <core-selector id="menu" class="menu" selected="0" on-core-select="">
-                    <core-item class="smooth-trans" label="" icon=""></core-item>
+                    <template repeat="{{l, index in data.library}}">
+                        <paper-item label="{{l.label}}" icon="{{l.icon}}"></paper-item>
+                        <core-ajax url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
+                    </template>
                 </core-selector>
             </core-header-panel>
 
 
             <!-- toolbar -->
 
-            <core-icon-button tool on-tap="" icon="arrow-back"></core-icon-button>
-
-            <div flex tool class="font-800">APP NAME</div>
+            <div flex tool class="font-800">Manager</div>
 
 
             <!-- content -->
@@ -67,6 +69,8 @@
 
     <script>
     Polymer("media-manager", {
+
+        allVideos: [],
 
         ready: function() {}
     });

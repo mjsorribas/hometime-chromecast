@@ -45,14 +45,14 @@
                 </core-toolbar>
 
                 <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{selectMenu}}">
-                    <template repeat="{{data.library}}">
-                        <paper-item class="smooth-trans" label="{{label}}" icon="{{icon}}">
-                            </core-paper>
+                    <template repeat="{{l, index in data.library}}">
+                        <paper-item class="smooth-trans" label="{{l.label}}" icon="{{l.icon}}"></paper-item>
+                        <core-ajax class="my-ajax" url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
                     </template>
                 </core-selector>
                 <core-menu class="user-nav">
-                    <paper-item icon="account-circle" label="Login"></paper-item>
-                    <paper-item icon="account-circle" label="Account"></paper-item>
+                    <!-- <paper-item icon="account-circle" label="Login"></paper-item> -->
+                    <!-- <paper-item icon="account-circle" label="Account"></paper-item> -->
                     <paper-item icon="send-money" label="Sign Out"></paper-item>
                 </core-menu>
             </core-header-panel>
@@ -79,11 +79,6 @@
                     <section layout vertical style="background-color: #eee;">
 
                         <div flex>
-
-                            <!-- videos data url -->
-                            <template id="ajax_container" repeat="{{l, index in data.library}}">
-                                <core-ajax class="my-ajax" url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
-                            </template>
 
                             <core-animated-pages selected="{{currentList}}" transitions="list-cascade">
 
