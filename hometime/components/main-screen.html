@@ -46,8 +46,9 @@
 
                 <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{selectMenu}}">
                     <template repeat="{{l, index in data.library}}">
-                        <paper-item class="smooth-trans" label="{{l.label}}" icon="{{l.icon}}"></paper-item>
-                        <core-ajax class="my-ajax" url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
+                        <paper-item class="smooth-trans" label="{{l.label}}" icon="{{l.icon}}">
+                            <core-ajax class="my-ajax" url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
+                        </paper-item>
                     </template>
                 </core-selector>
                 <core-menu class="user-nav">

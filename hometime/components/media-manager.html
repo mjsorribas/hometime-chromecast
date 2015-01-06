@@ -40,10 +40,11 @@
                 <core-toolbar>
                     <span flex class="menu-title">Select a library</span>
                 </core-toolbar>
-                <core-selector id="menu" class="menu" selected="0" on-core-select="">
+                <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{}}">
                     <template repeat="{{l, index in data.library}}">
-                        <paper-item label="{{l.label}}" icon="{{l.icon}}"></paper-item>
-                        <core-ajax url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
+                        <paper-item label="{{l.label}}" icon="{{l.icon}}">
+                            <core-ajax url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
+                        </paper-item>
                     </template>
                 </core-selector>
             </core-header-panel>
@@ -56,14 +57,20 @@
 
             <!-- content -->
             <div fit class="content">
-
-                <!-- Mode: Video player -->
-                <section style="background-color: #333;">
-
-                </section>
-
+                <core-animated-pages selected="{{currentList}}" transitions="slide-from-right" style="min-height: 100%;">
+                    <template id="lister" is="auto-binding" bind="{{videoLibrary}}" repeat="{{videos, index in videoLibrary}}">
+                        <!-- Mode: listing videos -->
+                        <section layout vertical style="background-color: #eee;">
+                            <div flex>
+                                <template repeat="{{ v in videos }}">
+                                    <video-item video="{{v}}" queues="{{queues}}" mode="{{currentMode}}"></video-item>
+                                </template>
+                            </div>
+                        </section>
+                    </template>
+                </core-animated-pages>
+                <!-- end video listing -->
             </div>
-
         </core-scaffold>
     </template>
 
@@ -72,7 +79,40 @@
 
         allVideos: [],
 
-        ready: function() {}
+        currentList: 0,
+
+        totalResponse: 0,
+
+        ready: function() {
+
+            var self = this;
+
+            window.self = self;
+
+            this.lister = this.$.lister;
+
+            this.parse = function(e) {
+
+                self.totalResponse += 1;
+
+                if (self.totalResponse == self.data.library.length) {
+
+                    self.bindVideos();
+
+                };
+
+            };
+
+            this.bindVideos = function() {
+
+                self.lister.model = {
+
+                    videoLibrary: self.allVideos
+
+                }
+
+            };
+        }
     });
     </script>
 
