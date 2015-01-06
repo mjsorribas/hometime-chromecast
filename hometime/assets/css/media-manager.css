@@ -1,0 +1,14 @@
+.menu paper-item.core-selected {
+    background-color: #EEE;
+    border-left: 2px solid #FB8C00;
+}
+.content {
+    padding: 10px;
+}
+video-item::shadow .video-item {
+    margin-bottom: 10px;
+}
+paper-button {
+    background: #4285f4;
+    color: #fff;
+}

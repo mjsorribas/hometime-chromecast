@@ -1,28 +1,22 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<!-- <link rel="import" href="../bower_components/font-roboto/roboto.html"> -->
 <!-- import components -->
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-scaffold/core-scaffold.html">
-<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
-<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../bower_components/core-selector/core-selector.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
-<link rel="import" href="../bower_components/core-icons/av-icons.html">
 <link rel="import" href="../bower_components/core-icons/hardware-icons.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
-<link rel="import" href="../bower_components/core-animated-pages/transitions/list-cascade.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
-<link rel="import" href="../bower_components/core-drawer-panel/core-drawer-panel.html">
-<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 
 <!-- my components -->
-<link rel="import" href="../components/video-item.html">
+<link rel="import" href="../components/video-item-edit.html">
 
 
 <polymer-element name="media-manager">
@@ -51,25 +45,43 @@
 
 
             <!-- toolbar -->
-
-            <div flex tool class="font-800">Manager</div>
-
+            <template if="{{currentMode === 1}}">
+                <core-icon-button tool on-tap="{{prevMode}}" icon="arrow-back"></core-icon-button>
+            </template>
+            <div flex tool class="font-800">Manager <b>{{data.library[currentList].label}}</b> List</div>
+            <template if="{{currentMode === 0}}">
+                <core-icon-button tool on-tap="{{nextMode}}" icon="arrow-forward"></core-icon-button>
+            </template>
 
             <!-- content -->
             <div fit class="content">
-                <core-animated-pages selected="{{currentList}}" transitions="slide-from-right" style="min-height: 100%;">
-                    <template id="lister" is="auto-binding" bind="{{videoLibrary}}" repeat="{{videos, index in videoLibrary}}">
-                        <!-- Mode: listing videos -->
-                        <section layout vertical style="background-color: #eee;">
-                            <div flex>
-                                <template repeat="{{ v in videos }}">
-                                    <video-item video="{{v}}" queues="{{queues}}" mode="{{currentMode}}"></video-item>
+                <core-animated-pages selected="{{currentMode}}" transitions="slide-from-right">
+                    <section>
+                        <div cross-fade>
+                            <core-animated-pages selected="{{currentList}}" transitions="cross-fade" style="min-height: 100%;">
+                                <template id="lister" is="auto-binding" bind="{{videoLibrary}}" repeat="{{videos, index in videoLibrary}}">
+                                    <!-- Mode: listing videos -->
+                                    <section layout vertical style="background-color: #eee;">
+                                        <div cross-fade>
+                                            <template repeat="{{ v in videos }}">
+                                                <video-item video="{{v}}" queues="{{queues}}" icon="create"></video-item>
+                                            </template>
+                                        </div>
+                                    </section>
                                 </template>
-                            </div>
-                        </section>
-                    </template>
+                            </core-animated-pages>
+                            <!-- end video listing -->
+                        </div>
+                    </section>
+                    <section>
+                        <div cross-fade>
+                            <paper-button>
+                                <core-icon icon="search"></core-icon> Scan new media file
+                            </paper-button>
+                            in <b>{{data.library[currentList].label}}</b>
+                        </div>
+                    </section>
                 </core-animated-pages>
-                <!-- end video listing -->
             </div>
         </core-scaffold>
     </template>
@@ -77,11 +89,23 @@
     <script>
     Polymer("media-manager", {
 
+        currentMode: 0,
+
         allVideos: [],
 
         currentList: 0,
 
         totalResponse: 0,
+
+        nextMode: function() {
+
+            this.currentMode = 1;
+        },
+
+        prevMode: function() {
+
+            this.currentMode = 0;
+        },
 
         ready: function() {
 

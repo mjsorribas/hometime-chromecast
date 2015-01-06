@@ -1,0 +1,105 @@
+<link rel="import" href="../bower_components/core-transition/core-transition-css.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/core-tooltip/core-tooltip.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../components/video-item-edit-script.html">
+<!-- xdialog elelement -->
+<!-- a simple dialog element made with core-overlay -->
+<polymer-element name="x-dialog" attributes="opened autoCloseDisabled">
+    <template>
+        <core-overlay id="overlay" layered backdrop opened="{{opened}}" autoCloseDisabled="{{autoCloseDisabled}}" transition="core-transition-center"></core-overlay>
+        <content></content>
+    </template>
+    <script>
+    Polymer('x-dialog', {
+        ready: function() {
+            this.$.overlay.target = this;
+        },
+
+        toggle: function() {
+            this.$.overlay.toggle();
+        }
+    });
+    </script>
+</polymer-element>
+<!--  -->
+<polymer-element name="video-item" attributes="video queues mode" noscript>
+    <template>
+        <link rel="stylesheet" href="../assets/css/video-item.css">
+        <div id="video_item" class="video-item">
+            <div layout horizontal>
+                <div class="poster">
+                    <img src="{{video.poster}}">
+                </div>
+                <div flex class="detail">
+                    <div vertical layout>
+                        <div>
+                            <div class="vidname">{{video.title}}</div>
+                        </div>
+
+                        <div horizontal layout class="h-100 w-100">
+                            <div flex>
+                                <div flex class="description">
+                                    {{video.description}}
+                                    <small>date added: {{video.addTime}}</small>
+                                </div>
+                            </div>
+                            <div layout vertical>
+                                <div flex></div>
+                                <core-tooltip label="Edit this video" class="fancy">
+                                    <paper-fab on-tap="{{showEditor}}" icon="create" mini="true"></paper-fab>
+                                </core-tooltip>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <paper-shadow z="1"></paper-shadow>
+        </div>
+        <!-- poup -->
+        <x-dialog id="dialog" class="dialog">
+            <!-- place all overlay styles inside the overlay target -->
+            <style no-shim>
+            .dialog {
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 13px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                overflow: hidden;
+                background: white;
+                padding: 30px 42px;
+                outline: 1px solid rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            }
+            #dialog {
+                width: 500px;
+            }
+            </style>
+            <h2>Edit video</h2>
+
+            <div>
+                <input placeholder="say something..." autofocus on-input="{{inputHandler}}" />
+                <br> I agree with this wholeheartedly.
+                <core-overlay layered id="confirmation" class="dialog" backdrop transition="core-transition-top">
+                    <!-- place all overlay styles inside the overlay target -->
+                    <style no-shim>
+                    .dialog {} #confirmation {}
+                    </style>
+                    Thank you.
+                </core-overlay>
+            </div>
+            <br>
+            <br>
+            <paper-button>
+                <core-icon icon="search"></core-icon> SAVE
+            </paper-button>
+            <paper-button>
+                <core-icon icon="search"></core-icon> CANCEL
+            </paper-button>
+        </x-dialog>
+    </template>
+</polymer-element>

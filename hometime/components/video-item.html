@@ -5,51 +5,15 @@
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../components/video-item-script.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <polymer-element name="video-item" attributes="video queues mode" noscript>
     <template>
-        <style type="text/css">
-        .vidname {
-            font-weight: 800;
-            padding-bottom: 10px;
-            font-size: 1.3em;
-            color: #555;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .poster {
-            width: 40%;
-            background-color: #333;
-            border-radius: 4px 0 0 4px;
-        }
-        .poster a {
-            line-height: 0;
-            display: block;
-        }
-        .poster img {
-            width: 100%;
-        }
-        .detail {
-            padding: 10px;
-        }
-        .description {
-            color: #666;
-            font-size: .85em;
-            font-weight: 300;
-        }
-        .btn-watch {
-            color: #fff;
-            background-color: #FF9800;
-        }
-        .btn-confirm {
-            color: #666;
-            background-color: #E0E0E0;
-        }
-        </style>
+        <link rel="stylesheet" href="../assets/css/video-item.css">
         <div id="video_item" class="video-item">
             <div layout horizontal>
                 <div class="poster">
                     <img src="{{video.poster}}">
+                    <paper-ripple class="recenteringTouch" fit></paper-ripple>
                 </div>
                 <div flex class="detail">
                     <div vertical layout>
