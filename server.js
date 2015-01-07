@@ -12,6 +12,10 @@ var express = require('express'),
 
 var app = express();
 
+var media_db = new JsonDB('./db/media', true, true);
+
+var db_hometime = require('./db/db-hometime');
+
 
 
 
@@ -35,6 +39,17 @@ app.get("/media/*", vidStreamer);
 // ************* MEDIA MANAGER *************
 app.use('/m', express.static(__dirname + '/media-manager'));
 
+// get new item
+app.get('/scan/*', function(req, res) {
+
+    media_db.reload();
+
+    var library = req.originalUrl.replace(/.*\//, '');
+
+    var newItems = db_hometime.scanNewItem(library);
+
+    res.json(newItems);
+});
 
 
 
@@ -64,10 +79,8 @@ app.get('/app', function(req, res) {
     res.json(db_sender_app);
 });
 
-var media_db = new JsonDB('./db/media', true, true);
 
-var db_hometime = require('./db/db-hometime');
-
+// get media files
 app.get('/library/*', function(req, res) {
 
     media_db.reload();

@@ -1,3 +1,10 @@
+core-scaffold {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+}
+core-scaffold /deep/ .w-100 {
+	width: 100%;
+}
 .menu paper-item.core-selected {
     background-color: #EEE;
     border-left: 2px solid #FB8C00;
@@ -11,4 +18,7 @@ video-item::shadow .video-item {
 paper-button {
     background: #4285f4;
     color: #fff;
+}
+paper-spinner {
+	margin-bottom: -6px;
 }

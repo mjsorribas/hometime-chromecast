@@ -13,6 +13,7 @@
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 
 
 <!-- my components -->
@@ -56,6 +57,32 @@
             <!-- content -->
             <div fit class="content">
                 <core-animated-pages selected="{{currentMode}}" transitions="slide-from-right">
+                    <!--  -->
+                    <section>
+                        <div cross-fade>
+                            <h2>
+                                <paper-spinner id="spinner"></paper-spinner>
+                                Scan new media files in <b>{{data.library[currentList].label}}</b>
+                            </h2>
+                            <!-- ajax get to scan new media files -->
+                            <core-ajax id="ajax_scan" method="GET" url="/scan/{{data.library[currentList].dataUrl}}" handleAs="json" response="{{newVideos}}" on-core-response="{{handleScanRespone}}"></core-ajax>
+                            <!-- call ajax -->
+                            <paper-button id="btn_scan" on-tap="{{scanFiles}}" raised>
+                                <core-icon icon="search"></core-icon> Scan
+                            </paper-button>
+
+                            <template repeat="{{v in newVideos}}">
+                                <div class="item">
+                                    {{v.ori}}
+                                </div>
+                                <div>
+                                    {{v.indexed}}
+                                </div>
+                            </template>
+
+                        </div>
+                    </section>
+                    <!--  -->
                     <section>
                         <div cross-fade>
                             <core-animated-pages selected="{{currentList}}" transitions="cross-fade" style="min-height: 100%;">
@@ -70,17 +97,9 @@
                                     </section>
                                 </template>
                             </core-animated-pages>
-                            <!-- end video listing -->
                         </div>
                     </section>
-                    <section>
-                        <div cross-fade>
-                            <paper-button>
-                                <core-icon icon="search"></core-icon> Scan new media file
-                            </paper-button>
-                            in <b>{{data.library[currentList].label}}</b>
-                        </div>
-                    </section>
+
                 </core-animated-pages>
             </div>
         </core-scaffold>
@@ -105,6 +124,25 @@
         prevMode: function() {
 
             this.currentMode = 0;
+        },
+
+        scanFiles: function() {
+
+            this.$.spinner.active = true;
+
+            this.$.btn_scan.disabled = true;
+
+            this.$.ajax_scan.go();
+        },
+
+        handleScanRespone: function(e) {
+
+            window.res = e.detail.response;
+
+            this.$.spinner.active = false;
+
+            this.$.btn_scan.disabled = false;
+
         },
 
         ready: function() {
