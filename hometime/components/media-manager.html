@@ -14,6 +14,8 @@
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
 
 
 <!-- my components -->
@@ -57,38 +59,13 @@
             <!-- content -->
             <div fit class="content">
                 <core-animated-pages selected="{{currentMode}}" transitions="slide-from-right">
-                    <!--  -->
-                    <section>
-                        <div cross-fade>
-                            <h2>
-                                <paper-spinner id="spinner"></paper-spinner>
-                                Scan new media files in <b>{{data.library[currentList].label}}</b>
-                            </h2>
-                            <!-- ajax get to scan new media files -->
-                            <core-ajax id="ajax_scan" method="GET" url="/scan/{{data.library[currentList].dataUrl}}" handleAs="json" response="{{newVideos}}" on-core-response="{{handleScanRespone}}"></core-ajax>
-                            <!-- call ajax -->
-                            <paper-button id="btn_scan" on-tap="{{scanFiles}}" raised>
-                                <core-icon icon="search"></core-icon> Scan
-                            </paper-button>
 
-                            <template repeat="{{v in newVideos}}">
-                                <div class="item">
-                                    {{v.ori}}
-                                </div>
-                                <div>
-                                    {{v.indexed}}
-                                </div>
-                            </template>
-
-                        </div>
-                    </section>
-                    <!--  -->
                     <section>
                         <div cross-fade>
                             <core-animated-pages selected="{{currentList}}" transitions="cross-fade" style="min-height: 100%;">
                                 <template id="lister" is="auto-binding" bind="{{videoLibrary}}" repeat="{{videos, index in videoLibrary}}">
                                     <!-- Mode: listing videos -->
-                                    <section layout vertical style="background-color: #eee;">
+                                    <section layout vertical style="background-color: #eee;" class="padding-10">
                                         <div cross-fade>
                                             <template repeat="{{ v in videos }}">
                                                 <video-item video="{{v}}" queues="{{queues}}" icon="create"></video-item>
@@ -99,9 +76,49 @@
                             </core-animated-pages>
                         </div>
                     </section>
+                    <!--  -->
+                    <section>
+                        <div cross-fade layout vertical>
+                            <section class="padding-10 header">
+                                <h2>
+                                Scan new media files in <b>{{data.library[currentList].label}}</b>
+                                <paper-spinner id="spinner"></paper-spinner>
+                            </h2>
+                                <!-- ajax get to scan new media files -->
+                                <core-ajax id="ajax_scan" method="GET" url="/scan/{{data.library[currentList].dataUrl}}" handleAs="json" response="{{newVideos}}" on-core-response="{{handleScanRespone}}"></core-ajax>
+                                <!-- call ajax -->
+                                <paper-button id="btn_scan" on-tap="{{scanFiles}}" raised>
+                                    <core-icon icon="search"></core-icon> Scan
+                                </paper-button>
+                                <paper-shadow z="1"></paper-shadow>
+                            </section>
+                            <section flex class="padding-10">
+                                <template repeat="{{v in newVideos}}">
+                                    <div class="item padding-10 rounded">
+                                        <div class="w-100 hide-overflow">
+                                            <div class="file-path">
+                                                <strong>File path: </strong> {{v.ori}}
+                                            </div>
+                                            <div>
+                                                <strong>Indexed: </strong><a target="_blank" href="/media/{{v.indexed}}?V" title="">{{v.indexed}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </section>
+                        </div>
+                    </section>
+                    <!--  -->
 
                 </core-animated-pages>
             </div>
+            <!-- modal -->
+            <paper-action-dialog class="dialog" id="dialog" backdrop autoCloseDisabled layered="false" transition="core-transition-center">
+                <p>
+                    {{dialogMessage}}
+                </p>
+                <paper-button affirmative autofocus>Close</paper-button>
+            </paper-action-dialog>
         </core-scaffold>
     </template>
 
@@ -110,11 +127,17 @@
 
         currentMode: 0,
 
+        found: false,
+
         allVideos: [],
 
         currentList: 0,
 
+        data: null,
+
         totalResponse: 0,
+
+        dialogMessage: 'hi there!',
 
         nextMode: function() {
 
@@ -137,7 +160,21 @@
 
         handleScanRespone: function(e) {
 
-            window.res = e.detail.response;
+            this.found = false;
+
+            var res = e.detail.response;
+
+            if (!res.length) {
+                this.$.dialog.style.backgroundColor = '#FAFAFA';
+                this.dialogMessage = 'No new media files in: ' + this.data.library[this.currentList].label;
+            } else {
+                this.$.dialog.style.backgroundColor = '#FFFF8D';
+                this.dialogMessage = 'Found ' + res.length + ' media file(s) in: ' + this.data.library[this.currentList].label;
+            }
+
+            window.dialog = this.$.dialog;
+
+            this.$.dialog.toggle();
 
             this.$.spinner.active = false;
 

@@ -40,7 +40,8 @@ core-scaffold /deep/ .smooth-trans {
 }
 core-scaffold {
     font-family: 'Open Sans', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 300;
 }
 /* menu bar of the left panel */
 

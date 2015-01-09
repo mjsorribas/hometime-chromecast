@@ -139,6 +139,11 @@ module.exports = {
         }
     },
 
+    saveVideoInfo: function(url, video) {
+        // the last argument <=> overwrite
+        media_db.push(url, video, false);
+    },
+
     scanNewItem: function(library) {
 
         var dir = path.join(__dirname, '../media/library', library);

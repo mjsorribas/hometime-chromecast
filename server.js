@@ -12,6 +12,16 @@ var express = require('express'),
 
 var app = express();
 
+app.use(compression());
+
+app.use(bodyParser.urlencoded({
+    extended: true
+})); // parse application/x-www-form-urlencoded
+
+app.use(bodyParser.json()); // parse application/json
+
+app.use(methodOverride()); // simulate DELETE and PUT
+
 var media_db = new JsonDB('./db/media', true, true);
 
 var db_hometime = require('./db/db-hometime');
@@ -51,6 +61,18 @@ app.get('/scan/*', function(req, res) {
     res.json(newItems);
 });
 
+app.post('/m/save', function(req, res) {
+
+    var body = req.body;
+
+    db_hometime.saveVideoInfo(body.dbUrl, body.video);
+
+    // if (true)
+    res.sendStatus(200); // OK
+    // else
+    // res.sendStatus(403);
+});
+
 
 
 
@@ -59,19 +81,7 @@ app.get('/scan/*', function(req, res) {
 // load sender app beginer infomation
 var db_sender_app = new JsonDB('./db/sender_app', true, true).getData('/');
 
-app.use(compression());
-
 app.use(express.static(__dirname + '/hometime'));
-
-app.use(bodyParser.urlencoded({
-
-    extended: false
-
-})); // parse application/x-www-form-urlencoded
-
-app.use(bodyParser.json()); // parse application/json
-
-app.use(methodOverride()); // simulate DELETE and PUT
 
 // load chromecast sender app beginer data
 app.get('/app', function(req, res) {
@@ -97,4 +107,4 @@ app.get('/library/*', function(req, res) {
 app.listen(3000);
 
 
-console.log("Hometime mediaser running on port 3000");
+console.log("Hometime mediaserver running on port 3000");
