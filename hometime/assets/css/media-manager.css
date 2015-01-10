@@ -2,6 +2,7 @@ core-scaffold {
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 300;
+    color: #777;
 }
 core-scaffold .w-100, core-scaffold /deep/ .w-100 {
     width: 100%;
@@ -15,14 +16,14 @@ core-scaffold /deep/ .hide-overflow {
     white-space: nowrap;
 }
 core-scaffold core-header-panel core-toolbar {
-    background-color: #FFCC80;
-    color: #333;
+    background-color: #78909C;
+    color: #fff;
 }
 core-scaffold /deep/ #headerPanel core-toolbar {
-    background-color: #FF9800;
+    background-color: #607D8B;
 }
 .menu /deep/ core-icon {
-    color: #FF7043;
+    color: #607D8B;
 }
 .menu paper-item.core-selected {
     background-color: #EEE;
@@ -44,6 +45,7 @@ paper-spinner {
 .item {
     background-color: #FFD740;
     margin-bottom: 10px;
+    color: #333;
 }
 .file-path {
     white-space: initial;
