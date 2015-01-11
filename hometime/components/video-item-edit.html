@@ -1,33 +1,12 @@
-<link rel="import" href="../bower_components/core-transition/core-transition-css.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/core-tooltip/core-tooltip.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <!-- mines -->
 <link rel="import" href="../components/video-item-edit-script.html">
-<!-- xdialog elelement -->
-<!-- a simple dialog element made with core-overlay -->
-<polymer-element name="x-dialog" attributes="opened autoCloseDisabled">
-    <template>
-        <core-overlay id="overlay" layered backdrop opened="{{opened}}" autoCloseDisabled="{{autoCloseDisabled}}" transition="core-transition-center"></core-overlay>
-        <content></content>
-    </template>
-    <script>
-    Polymer('x-dialog', {
-        ready: function() {
-            this.$.overlay.target = this;
-        },
 
-        toggle: function() {
-            this.$.overlay.toggle();
-        }
-    });
-    </script>
-</polymer-element>
-<!--  -->
-<polymer-element name="video-item" attributes="video queues mode" noscript>
+<polymer-element name="video-item" attributes="video libIndex vidIndex" noscript>
     <template>
         <link rel="stylesheet" href="../assets/css/video-item.css">
         <div id="video_item" class="video-item">
@@ -60,62 +39,5 @@
             </div>
             <paper-shadow z="1"></paper-shadow>
         </div>
-        <!-- poup -->
-        <x-dialog id="dialog" class="dialog">
-            <!-- place all overlay styles inside the overlay target -->
-            <style no-shim>
-            .dialog {
-                box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 13px;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                overflow: hidden;
-                background: white;
-                padding: 30px 42px;
-                outline: 1px solid rgba(0, 0, 0, 0.2);
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            }
-            #dialog {
-                width: 500px;
-            }
-            core-icon[icon="done"] {
-                color: #4CAF50;
-            }
-            core-icon[icon="close"] {
-                color: #FF5252;
-            }
-            </style>
-            <h2>Edit video</h2>
-            <div layout horizontal>
-                <div flex>
-                    <paper-input value="{{video.title}}" label="First Name" id="title" class="w-100"></paper-input>
-                    <paper-input value="{{video.description}}" label="Video description" id="description" maxlength="255" class="w-100" multiline></paper-input>
-                </div>
-                <div>
-                    <paper-spinner id="spinner"></paper-spinner>
-                </div>
-                <core-overlay layered id="confirmation" class="dialog" backdrop transition="core-transition-top">
-                    <!-- place all overlay styles inside the overlay target -->
-                    <style no-shim>
-                    .dialog {} #confirmation {}
-                    </style>
-                    Thank you.
-                </core-overlay>
-            </div>
-            <br>
-            <br>
-            <!-- post ajax -->
-            <core-ajax contentType="application/json" id="ajax_save" method="POST" url="/m/save" on-core-response="{{handleResponseSave}}">
-            </core-ajax>
-            <!-- end post ajax -->
-            <paper-button on-tap="{{saveEdit}}">
-                <core-icon icon="done"></core-icon> SAVE
-            </paper-button>
-            <paper-button on-tap="{{toggleEditor}}">
-                <core-icon icon="close"></core-icon> CANCEL
-            </paper-button>
-        </x-dialog>
     </template>
 </polymer-element>
