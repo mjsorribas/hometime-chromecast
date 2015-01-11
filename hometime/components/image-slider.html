@@ -1,4 +1,5 @@
-<polymer-element name="image-slider" attributes="images">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<polymer-element name="image-slider" attributes="images selected">
     <template>
         <style>
         * {
@@ -62,54 +63,18 @@
         #slide5:checked ~ #slides .inner {
             margin-left: -500%;
         }
-        #slide6:checked ~ #slides .inner {
-            margin-left: -600%;
-        }
-        #slide7:checked ~ #slides .inner {
-            margin-left: -700%;
-        }
-        #slide8:checked ~ #slides .inner {
-            margin-left: -800%;
-        }
-        #slide9:checked ~ #slides .inner {
-            margin-left: -900%;
-        }
-        #slide10:checked ~ #slides .inner {
-            margin-left: -1000%;
-        }
         input[type="radio"] {
             display: none;
         }
-        label {
-            background: #CCC;
-            display: inline-block;
-            cursor: pointer;
-            width: 10px;
-            height: 10px;
-            border-radius: 5px;
-        }
-        #slide0:checked ~ label[for="slide0"],
-        #slide1:checked ~ label[for="slide1"],
-        #slide2:checked ~ label[for="slide2"],
-        #slide3:checked ~ label[for="slide3"],
-        #slide4:checked ~ label[for="slide4"],
-        #slide5:checked ~ label[for="slide5"],
-        #slide6:checked ~ label[for="slide6"],
-        #slide7:checked ~ label[for="slide7"],
-        #slide8:checked ~ label[for="slide8"],
-        #slide9:checked ~ label[for="slide9"],
-        #slide10:checked ~ label[for="slide10"] {
-            background: #7CB342;
-        }
         </style>
         <div id="slider">
+            <paper-radio-group selected="{{selected}}">
+                <template repeat="{{ image, i in images }}">
+                    <paper-radio-button name="{{i}}"></paper-radio-button>
+                </template>
+            </paper-radio-group>
             <template repeat="{{ image, i in images }}">
-                <template bind if="{{ i == 0 }}">
-                    <input type="radio" name="slider" id="slide{{i}}" checked>
-                </template>
-                <template bind if="{{ i != 0 }}">
-                    <input type="radio" name="slider" id="slide{{i}}">
-                </template>
+                <input type="radio" name="slider" id="slide{{i}}" checked="{{i == selected}}">
             </template>
             <div id="slides">
                 <div id="overflow">
@@ -122,14 +87,13 @@
                     </div>
                 </div>
             </div>
-            <template repeat="{{ image, i in images }}">
-                <label for="slide{{i}}"></label>
-            </template>
         </div>
     </template>
     <script>
     Polymer('image-slider', {
-
+        select: function() {
+            window._demo = this;
+        }
     });
     </script>
 </polymer-element>

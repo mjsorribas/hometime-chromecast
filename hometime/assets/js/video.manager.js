@@ -102,6 +102,7 @@ Polymer("media-manager", {
     },
 
     saveEdit: function() {
+        console.log(this.$.image_slider.selected);
         this.$.edit_spinner.active = true;
         var self = this;
         var targetVideo = this.targetVideo;
