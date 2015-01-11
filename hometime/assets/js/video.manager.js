@@ -31,11 +31,33 @@ Polymer("media-manager", {
 
     scanFiles: function() {
 
-        this.$.spinner.active = true;
+        this.$.scan_spinner.active = true;
 
         this.$.btn_scan.disabled = true;
 
         this.$.ajax_scan.go();
+    },
+
+    handleScanRespone: function(e) {
+
+        this.found = false;
+
+        var res = e.detail.response;
+
+        if (!res.length) {
+            this.$.scan_dialog.style.backgroundColor = '#FAFAFA';
+            this.dialogMessage = 'No new media files in: ' + this.data.library[this.currentList].label;
+        } else {
+            this.$.scan_dialog.style.backgroundColor = '#DCEDC8';
+            this.dialogMessage = 'Found ' + res.length + ' media file(s) in: ' + this.data.library[this.currentList].label;
+        }
+
+        this.$.scan_dialog.toggle();
+
+        this.$.spinner.active = false;
+
+        this.$.btn_scan.disabled = false;
+
     },
 
     showEditor: function(e) {
@@ -53,9 +75,34 @@ Polymer("media-manager", {
         this.$.edit_dialog.toggle();
     },
 
+    generateThumbnail: function() {
+        this.$.edit_spinner.active = true;
+        var targetVideo = this.targetVideo;
+        var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
+        var data = {
+            base: video.base,
+            fileType: video.fileType
+        };
+        this.$.ajax_generate_thumb.body = JSON.stringify(data);
+        this.$.ajax_generate_thumb.go();
+    },
+
+    handleResponseGenerate: function(e) {
+        var res = e.detail;
+        if (res.response == 'OK') {
+            var newq = '?' + new Date().getTime();
+            var images = this.$.image_slider.images;
+            for (var i = 0; i < images.length; i++) {
+                images[i] = images[i] + newq;
+            }
+        } else {
+            console.log('error');
+        }
+        this.$.edit_spinner.active = false;
+    },
+
     saveEdit: function() {
         this.$.edit_spinner.active = true;
-
         var self = this;
         var targetVideo = this.targetVideo;
         var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
@@ -82,28 +129,6 @@ Polymer("media-manager", {
         } else {
             console.log('error');
         }
-    },
-
-    handleScanRespone: function(e) {
-
-        this.found = false;
-
-        var res = e.detail.response;
-
-        if (!res.length) {
-            this.$.scan_dialog.style.backgroundColor = '#FAFAFA';
-            this.dialogMessage = 'No new media files in: ' + this.data.library[this.currentList].label;
-        } else {
-            this.$.scan_dialog.style.backgroundColor = '#FFFF8D';
-            this.dialogMessage = 'Found ' + res.length + ' media file(s) in: ' + this.data.library[this.currentList].label;
-        }
-
-        this.$.scan_dialog.toggle();
-
-        this.$.spinner.active = false;
-
-        this.$.btn_scan.disabled = false;
-
     },
 
     ready: function() {

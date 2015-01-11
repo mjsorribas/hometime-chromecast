@@ -102,7 +102,7 @@
                             <section class="padding-10 header">
                                 <h2>
                                 Scan new media files in <b>{{data.library[currentList].label}}</b>
-                                <paper-spinner id="edit_spinner"></paper-spinner>
+                                <paper-spinner id="scan_spinner"></paper-spinner>
                             </h2>
                                 <!-- ajax get to scan new media files -->
                                 <core-ajax id="ajax_scan" method="GET" url="/scan/{{data.library[currentList].dataUrl}}" handleAs="json" response="{{newVideos}}" on-core-response="{{handleScanRespone}}"></core-ajax>
@@ -112,7 +112,7 @@
                                 </paper-button>
                                 <paper-shadow z="1"></paper-shadow>
                             </section>
-                            <section flex class="padding-10">
+                            <section flex class="padding-20">
                                 <template repeat="{{v in newVideos}}">
                                     <div class="item padding-10 rounded">
                                         <div class="w-100 hide-overflow">
@@ -123,6 +123,7 @@
                                                 <strong>Indexed: </strong><a target="_blank" href="/media/{{v.indexed}}?V" title="">{{v.indexed}}</a>
                                             </div>
                                         </div>
+                                        <paper-shadow z="1"></paper-shadow>
                                     </div>
                                 </template>
                             </section>
@@ -166,6 +167,9 @@
             core-icon[icon="close"] {
                 color: #FF5252;
             }
+            core-icon[icon="cached"] {
+                color: #3F51B5;
+            }
             .thumbnail-block {
                 margin-top: 10px;
             }
@@ -175,15 +179,22 @@
             }
             </style>
             <h2>Edit video</h2>
-            <paper-spinner id="spinner"></paper-spinner>
             <div>
-                <div>
-                    <paper-input value="" label="First Name" id="input_title" class="w-100"></paper-input>
-                    <paper-input value="" label="Video description" id="input_description" maxlength="255" class="w-100" multiline></paper-input>
+                <div layout horizontal>
+                    <div flex>
+                        <paper-input value="" label="First Name" id="input_title" class="w-100"></paper-input>
+                        <paper-input value="" label="Video description" id="input_description" maxlength="255" class="w-100" multiline></paper-input>
+                    </div>
+                    <div>
+                        <paper-spinner id="edit_spinner"></paper-spinner>
+                    </div>
                 </div>
                 <div class="thumbnail-block">
                     <div>
                         Choose video's thumbnail:
+                        <paper-button on-tap="{{generateThumbnail}}">
+                            <core-icon icon="cached"></core-icon> Generate thumbnail
+                        </paper-button>
                     </div>
                     <image-slider id="image_slider">
                     </image-slider>
@@ -194,8 +205,11 @@
             </div>
             <br>
             <br>
-            <!-- post ajax -->
+            <!-- post ajax save edit -->
             <core-ajax contentType="application/json" id="ajax_save" method="POST" url="/m/save" on-core-response="{{handleResponseSave}}">
+            </core-ajax>
+            <!-- post ajax generate thumbnails -->
+            <core-ajax contentType="application/json" id="ajax_generate_thumb" method="POST" url="/m/generate" on-core-response="{{handleResponseGenerate}}">
             </core-ajax>
             <!-- end post ajax -->
             <paper-button on-tap="{{saveEdit}}">

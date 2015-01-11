@@ -73,6 +73,15 @@ app.post('/m/save', function(req, res) {
     // res.sendStatus(403);
 });
 
+app.post('/m/generate', function(req, res) {
+    db_hometime.generateThumbnails(req.body, function(err) {
+        if (err) {
+            res.sendStatus(403); // FAILE
+        } else {
+            res.sendStatus(200); // OK
+        }
+    });
+});
 
 
 

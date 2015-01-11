@@ -6,6 +6,9 @@ var ffmpeg = require('fluent-ffmpeg');
 var videoName = 'media/library/others/2014/_htdmQr9n4623V1YNIMCT2BmQP0gK7pDWGU.mp4';
 
 var proc = new ffmpeg(videoName)
+    .on('end', function() {
+        console.log('Screenshots taken');
+    })
     .screenshots({
         count: 4,
         size: '460x268',

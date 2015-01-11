@@ -1,12 +1,10 @@
 // 
 // 
 var fs = require('fs'),
-
     path = require('path'),
-
     JsonDB = require('node-json-db'),
-
-    randomstring = require("randomstring");
+    randomstring = require("randomstring"),
+    ffmpeg = require('fluent-ffmpeg');
 
 // second argument <=> auto save after push || if false we have to call .save()
 // thirt argument <=> readable format.
@@ -156,6 +154,38 @@ module.exports = {
         dirTree(dir, res);
 
         return res;
+    },
+
+    generateThumbnails: function(video, callback) {
+
+        var filepath = path.join(__dirname, '../', video.base + video.fileType);
+
+        var dir = path.dirname(filepath);
+
+        var screenshoot = filepath.replace(video.fileType, '_4.jpg');
+
+        // check if already generate
+        fs.exists(screenshoot, function(exists) {
+            if (exists) {
+                console.log('already generated');
+                callback(null);
+            } else {
+                // if not
+                var proc = new ffmpeg(filepath)
+                    .on('end', function(err) {
+                        if (err)
+                            callback('something went wrong');
+                        else
+                            callback(null);
+                    })
+                    .screenshots({
+                        count: 4,
+                        size: '460x268',
+                        folder: dir,
+                        filename: '%b.jpg'
+                    });
+            }
+        });
     },
 
     getUser: function(uname, password) {

@@ -32,6 +32,9 @@ core-scaffold /deep/ #headerPanel core-toolbar {
 core-scaffold /deep/ .padding-10 {
     padding: 10px;
 }
+core-scaffold /deep/ .padding-20 {
+    padding: 20px;
+}
 video-item::shadow .video-item {
     margin-bottom: 10px;
 }
