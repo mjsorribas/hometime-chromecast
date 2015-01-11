@@ -123,8 +123,7 @@ Polymer('video-player', {
 
                         nextButton.click();
 
-                    }
-                    else if (self.currentplayState) {
+                    } else if (self.currentplayState) {
 
                         self.currentplayState = 0;
                     }
@@ -436,7 +435,7 @@ Polymer('video-player', {
         // change src
         self.nowPlayingIndex = index;
 
-        vid.querySelector('source').setAttribute("src", self.queues[self.nowPlayingIndex].src);
+        vid.querySelector('source').setAttribute("src", self.queues[self.nowPlayingIndex].base + '?V');
 
         // add active css to item 
         var activeitem = self.shadowRoot.querySelector('.a-video.active');

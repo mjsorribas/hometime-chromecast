@@ -121,11 +121,13 @@ module.exports = {
 
                     var base = mBase + year + '/';
 
-                    vid.poster = base + id + '.jpg';
+                    vid.base = base + id;
 
-                    vid.src = base + id + '?V';
+                    // vid.poster = base + id + vid.poster;
 
-                    vid.subtitle = base + id + '.vtt';
+                    // vid.src = base + id + '?V';
+
+                    // vid.subtitle = base + id + '.vtt';
 
                     videos.push(vid);
                 });

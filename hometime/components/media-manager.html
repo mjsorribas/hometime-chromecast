@@ -20,6 +20,7 @@
 <link rel="import" href="../bower_components/core-transition/core-transition-css.html">
 <!-- my components -->
 <link rel="import" href="../components/video-item-edit.html">
+<link rel="import" href="../components/image-slider.html">
 
 <!-- xdialog elelement -->
 <!-- a simple dialog element made with core-overlay -->
@@ -152,7 +153,7 @@
                 -moz-user-select: none;
                 overflow: hidden;
                 background: white;
-                padding: 30px 42px;
+                padding: 20px 30px;
                 outline: 1px solid rgba(0, 0, 0, 0.2);
                 box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             }
@@ -165,22 +166,30 @@
             core-icon[icon="close"] {
                 color: #FF5252;
             }
+            .thumbnail-block {
+                margin-top: 10px;
+            }
+            .thumbnail-block /deep/ #slider {
+                width: 260px;
+                margin-top: 10px;
+            }
             </style>
             <h2>Edit video</h2>
-            <div layout horizontal>
-                <div flex>
+            <paper-spinner id="spinner"></paper-spinner>
+            <div>
+                <div>
                     <paper-input value="" label="First Name" id="input_title" class="w-100"></paper-input>
                     <paper-input value="" label="Video description" id="input_description" maxlength="255" class="w-100" multiline></paper-input>
                 </div>
-                <div>
-                    <paper-spinner id="spinner"></paper-spinner>
+                <div class="thumbnail-block">
+                    <div>
+                        Choose video's thumbnail:
+                    </div>
+                    <image-slider id="image_slider">
+                    </image-slider>
                 </div>
                 <core-overlay layered id="confirmation" class="dialog" backdrop transition="core-transition-top">
                     <!-- place all overlay styles inside the overlay target -->
-                    <style no-shim>
-                    .dialog {} #confirmation {}
-                    </style>
-                    Thank you.
                 </core-overlay>
             </div>
             <br>

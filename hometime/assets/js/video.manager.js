@@ -42,8 +42,10 @@ Polymer("media-manager", {
         var targetVideo = this.targetVideo = e.detail;
         var dialog = this.$.edit_dialog;
         var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
+        var base = video.base;
         this.$.input_title.value = video.title;
         this.$.input_description.value = video.description;
+        this.$.image_slider.images = [base + '_1.jpg', base + '_2.jpg', base + '_3.jpg', base + '_4.jpg'];
         dialog.toggle();
     },
 
@@ -61,7 +63,7 @@ Polymer("media-manager", {
         video.description = this.$.input_description.value;
 
         var data = {
-            dbUrl: video.src.replace('/media/', '/').replace('?V', ''),
+            dbUrl: video.base.replace('/media/', '/'),
             video: {
                 title: video.title,
                 description: video.description

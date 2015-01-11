@@ -12,8 +12,10 @@
             <!-- google cast player -->
             <div class="player-wrapper">
 
-                <video width="500" class="video" id="htmlvideo" is="google-castable-video" on-google-castable-video-initialized="{{checkInitialize}}" width="500" poster="{{queues.length ? queues[nowPlayingIndex].poster : '/assets/img/404.png'}}">
-                    <source src="{{queues.length ? queues[nowPlayingIndex].src : ''}}" type="{{queues.length ? queues[nowPlayingIndex].mediaType : ''}}"></source>
+                <video width="500" class="video" id="htmlvideo" is="google-castable-video" on-google-castable-video-initialized="{{checkInitialize}}" width="500" 
+                poster="{{queues.length ? queues[nowPlayingIndex].base + queues[nowPlayingIndex].poster : '/assets/img/404.png'}}">
+                    <source 
+                    src="{{queues.length ? queues[nowPlayingIndex].base + '?V' : ''}}" type="{{queues.length ? queues[nowPlayingIndex].mediaType : ''}}"></source>
                     <track label="English" kind="captions" srclang="en" src="/media/library/movies/2013/sintel-en.vtt" default></track>
                 </video>
                 <div class="mask-control {{playStateClasses[currentplayState]}}">
@@ -60,7 +62,7 @@
                         <table class="a-video smooth-trans">
                             <tr>
                                 <td class="thumbnail">
-                                    <img src="{{video.poster}}">
+                                    <img src="{{video.base + video.poster}}">
                                 </td>
                                 <td class="name">
                                     {{video.title}}

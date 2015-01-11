@@ -37,6 +37,7 @@
                     "title": "Funniest Video In The World Ever",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-04T14:10:05.000Z"
                 }
@@ -46,6 +47,7 @@
                     "title": "Minions Trailer 1 2015",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T09:32:05.000Z"
                 }
@@ -57,13 +59,15 @@
                     "title": "Tieu de Video",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
-                    "description": "Noi dung Noi dung Noi dung Noi dung asdasd",
+                    "poster": "_1.jpg",
+                    "description": "blah",
                     "addTime": "2015-01-01T07:04:48.000Z"
                 },
                 "_htiRVvnXcdJ5WFionPyV1GK9bxna4WsykT": {
                     "title": "Demo ten video",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "mo ta \nasdasd no nhu the nay",
                     "addTime": "2015-01-01T07:04:48.000Z"
                 },
@@ -71,6 +75,7 @@
                     "title": "karaoke3",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:04:47.000Z"
                 }
@@ -80,6 +85,7 @@
                     "title": "karaoke4",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:04:48.000Z"
                 },
@@ -87,6 +93,7 @@
                     "title": "karaoke5",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:04:48.000Z"
                 },
@@ -94,6 +101,7 @@
                     "title": "karaoke6",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:04:49.000Z"
                 }
@@ -105,6 +113,7 @@
                     "title": "sintel-short",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-02T08:43:44.000Z"
                 }
@@ -114,6 +123,7 @@
                     "title": "Avengers Age of Ultron asdasd",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:05:41.000Z"
                 },
@@ -121,6 +131,7 @@
                     "title": "movie6",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:05:41.000Z"
                 },
@@ -128,6 +139,7 @@
                     "title": "movie7",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:05:41.000Z"
                 },
@@ -135,6 +147,7 @@
                     "title": "The Interview",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-04T12:52:25.000Z"
                 }
@@ -146,6 +159,7 @@
                     "title": "music2",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:05:48.000Z"
                 }
@@ -155,6 +169,7 @@
                     "title": "Chắc Ai Đó Sẽ Về - Sơn Tùng MTP",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T06:40:29.000Z"
                 },
@@ -162,6 +177,7 @@
                     "title": "Dark Horse",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T08:22:20.000Z"
                 },
@@ -169,6 +185,7 @@
                     "title": "Turn Down for What",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-04T13:59:00.000Z"
                 },
@@ -176,6 +193,7 @@
                     "title": "YouTube Rewind Turn Down for 2014",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-04T13:46:51.000Z"
                 }
@@ -187,7 +205,8 @@
                     "title": "BIRDS OF PREY",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
-                    "description": "",
+                    "poster": "_1.jpg",
+                    "description": "Fist description",
                     "addTime": "2015-01-01T07:06:03.000Z"
                 }
             },
@@ -196,6 +215,7 @@
                     "title": "PHANTOM FLEX",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-01T07:06:03.000Z"
                 },
@@ -203,8 +223,21 @@
                     "title": "Panasonic Lumix 4K Video Test",
                     "fileType": ".mp4",
                     "mediaType": "video/mp4",
+                    "poster": "_1.jpg",
                     "description": "",
                     "addTime": "2015-01-04T12:50:25.000Z"
+                }
+            }
+        }
+    },
+    "media": {
+        "library": {
+            "karaokes": {
+                "2013": {
+                    "_htEtho7YUQBDA1tFwAknhEcaqGDGSqPlE1": {
+                        "title": "Tieu de Video",
+                        "description": "Noi dung Noi dung Noi dung Noi dung"
+                    }
                 }
             }
         }
