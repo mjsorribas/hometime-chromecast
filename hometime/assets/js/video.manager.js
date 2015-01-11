@@ -38,13 +38,17 @@ Polymer("media-manager", {
         this.$.ajax_scan.go();
     },
 
-    toggleEditor: function(e) {
+    showEditor: function(e) {
         var targetVideo = this.targetVideo = e.detail;
         var dialog = this.$.edit_dialog;
         var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
         this.$.input_title.value = video.title;
         this.$.input_description.value = video.description;
         dialog.toggle();
+    },
+
+    hideEditor: function() {
+        this.$.edit_dialog.toggle();
     },
 
     saveEdit: function() {

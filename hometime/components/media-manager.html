@@ -87,7 +87,7 @@
                                     <section layout vertical style="background-color: #eee;" class="padding-10">
                                         <div cross-fade>
                                             <template repeat="{{ v, j in videos }}">
-                                                <video-item libIndex="{{i}}" vidIndex="{{j}}" on-toggle-editor="{{toggleEditor}}" video="{{v}}" icon="create"></video-item>
+                                                <video-item libIndex="{{i}}" vidIndex="{{j}}" on-toggle-editor="{{showEditor}}" video="{{v}}" icon="create"></video-item>
                                             </template>
                                         </div>
                                     </section>
@@ -192,7 +192,7 @@
             <paper-button on-tap="{{saveEdit}}">
                 <core-icon icon="done"></core-icon> SAVE
             </paper-button>
-            <paper-button on-tap="{{toggleEditor}}">
+            <paper-button on-tap="{{hideEditor}}">
                 <core-icon icon="close"></core-icon> CANCEL
             </paper-button>
         </x-dialog>
