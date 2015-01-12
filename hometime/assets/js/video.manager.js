@@ -54,7 +54,7 @@ Polymer("media-manager", {
 
         this.$.scan_dialog.toggle();
 
-        this.$.spinner.active = false;
+        this.$.scan_spinner.active = false;
 
         this.$.btn_scan.disabled = false;
 
@@ -102,11 +102,11 @@ Polymer("media-manager", {
     },
 
     saveEdit: function() {
-        console.log(this.$.image_slider.selected);
         this.$.edit_spinner.active = true;
         var self = this;
         var targetVideo = this.targetVideo;
         var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
+        video.poster = '_' + this.$.image_slider.selected + '.jpg';
         video.title = this.$.input_title.value;
         video.description = this.$.input_description.value;
 
