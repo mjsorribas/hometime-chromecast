@@ -65,9 +65,10 @@ Polymer("media-manager", {
         var dialog = this.$.edit_dialog;
         var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
         var base = video.base;
+        var newq = '?' + new Date().getTime();
         this.$.input_title.value = video.title;
         this.$.input_description.value = video.description;
-        this.$.image_slider.images = [base + '_1.jpg', base + '_2.jpg', base + '_3.jpg', base + '_4.jpg'];
+        this.$.image_slider.images = [base + '_1.jpg' + newq, base + '_2.jpg' + newq, base + '_3.jpg' + newq, base + '_4.jpg' + newq];
         dialog.toggle();
     },
 
@@ -106,7 +107,7 @@ Polymer("media-manager", {
         var self = this;
         var targetVideo = this.targetVideo;
         var video = this.allVideos[targetVideo.libIndex][targetVideo.vidIndex];
-        video.poster = '_' + this.$.image_slider.selected + '.jpg';
+        video.poster = '_' + (parseInt(this.$.image_slider.selected) + 1) + '.jpg';
         video.title = this.$.input_title.value;
         video.description = this.$.input_description.value;
 
@@ -114,12 +115,14 @@ Polymer("media-manager", {
             dbUrl: video.base.replace('/media/', '/'),
             video: {
                 title: video.title,
-                description: video.description
+                description: video.description,
+                poster: video.poster
             }
         };
 
         this.$.ajax_save.body = JSON.stringify(data);
         this.$.ajax_save.go();
+        video.poster = video.poster + '?' + new Date().getTime();
     },
 
     handleResponseSave: function(e) {
