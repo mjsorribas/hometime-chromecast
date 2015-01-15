@@ -18,10 +18,10 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 <link rel="import" href="../bower_components/core-transition/core-transition-css.html">
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <!-- my components -->
-<link rel="import" href="../components/video-item-edit.html">
-<link rel="import" href="../components/image-slider.html">
-
+<link rel="import" href="video-item-edit.html">
+<link rel="import" href="image-slider.html">
 <!-- xdialog elelement -->
 <!-- a simple dialog element made with core-overlay -->
 <polymer-element name="x-dialog" attributes="opened autoCloseDisabled">
@@ -63,6 +63,7 @@
                             <core-ajax url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
                         </paper-item>
                     </template>
+                    <paper-item icon="send-money" label="Sign Out" on-tap="{{logout}}"></paper-item>
                 </core-selector>
             </core-header-panel>
 
@@ -129,8 +130,6 @@
                             </section>
                         </div>
                     </section>
-                    <!--  -->
-
                 </core-animated-pages>
             </div>
             <!-- modal -->
@@ -220,8 +219,29 @@
                 <core-icon icon="close"></core-icon> CANCEL
             </paper-button>
         </x-dialog>
+        <!-- login -->
+        <div id="login_main" hidden?="{{loggedIn}}" cross-fade-delayed class="login-main">
+            <div class="bg" fit dummy cross-fade></div>
+            <div class="main" layout vertical slide-up-offscreen>
+                <div class="header">Sign In</div>
+                <div class="message"><small>{{loginMessage}}</small>
+                </div>
+                <paper-input label="Email" id="u_email" type="email" class="w-100"></paper-input>
+                <paper-input label="Password" id="u_password" type="password" class="w-100"></paper-input>
+                <div horizontal center layout>
+                    <div flex></div>
+                    <paper-fab id="login_check" class="login-check" icon="check" showing?="{{$.u_email.value.length && $.u_password.value.length}}" on-tap="{{login}}"></paper-fab>
+                </div>
+            </div>
+            <!-- post ajax login -->
+            <core-ajax contentType="application/json" id="ajax_login" method="POST" url="/m/login" on-core-response="{{handleLogin}}">
+            </core-ajax>
+        </div>
+
+        <!-- user cookie -->
+        <polymer-cookie id="cookie_user" name="user"></polymer-cookie>
     </template>
 
-    <script src="../assets/js/video.manager.js"></script>
+    <script src="../assets/js/media.manager.js"></script>
 
 </polymer-element>

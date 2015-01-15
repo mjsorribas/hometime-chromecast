@@ -3,11 +3,6 @@
   "menuTile": "PlayLists",
   "library": [
     {
-      "label": "Favorites",
-      "icon": "favorite",
-      "dataUrl": "/library/karaokes"
-    },
-    {
       "label": "Movies",
       "icon": "theaters",
       "dataUrl": "/library/movies"

@@ -10,13 +10,52 @@ Polymer("media-manager", {
 
     data: null,
 
+    loggedIn: false,
+
     totalResponse: 0,
 
-    dialogMessage: 'hi there!',
+    dialogMessage: 'Hi there!',
+
+    loginMessage: '',
 
     targetVideo: {
         libIndex: 0,
         vidIndex: 0
+    },
+
+    logout: function() {
+        this.$.cookie_user.deleteCookie();
+        this.loggedIn = this.$.cookie_user.isCookieStored();
+        this.$.login_main.hidden = false;
+    },
+
+    login: function() {
+
+        var data = {
+            email: this.$.u_email.value,
+            password: this.$.u_password.value
+        };
+
+        this.$.ajax_login.body = JSON.stringify(data);
+        this.$.ajax_login.go();
+    },
+
+    handleLogin: function(e) {
+
+        var res = JSON.parse(e.detail.response);
+
+        if (res.error) {
+            this.loginMessage = 'Email or password you entered is incorrect';
+            this.$.login_main.hidden = false;
+            this.$.cookie_user.deleteCookie();
+
+        } else if (res.user) {
+            var cookie = this.$.cookie_user;
+            cookie.value = res.user.email;
+            cookie.save();
+            this.loggedIn = this.$.cookie_user.isCookieStored();
+            this.$.login_main.hidden = true;
+        }
     },
 
     nextMode: function() {
@@ -57,7 +96,6 @@ Polymer("media-manager", {
         this.$.scan_spinner.active = false;
 
         this.$.btn_scan.disabled = false;
-
     },
 
     showEditor: function(e) {
@@ -142,6 +180,8 @@ Polymer("media-manager", {
         window.self = self;
 
         this.lister = this.$.lister;
+
+        this.loggedIn = this.$.cookie_user.isCookieStored();
 
         this.parse = function(e) {
 

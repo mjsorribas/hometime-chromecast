@@ -49,6 +49,22 @@ app.get("/media/*", vidStreamer);
 // ************* MEDIA MANAGER *************
 app.use('/m', express.static(__dirname + '/media-manager'));
 
+
+app.post('/m/login', function(req, res) {
+
+    var body = req.body;
+
+    db_hometime.loginManager(body.email, body.password, function(err, user) {
+
+        var resdata = {
+            error: err,
+            user: user
+        };
+
+        res.json(resdata);
+    });
+});
+
 // get new item
 app.get('/scan/*', function(req, res) {
 
@@ -67,10 +83,7 @@ app.post('/m/save', function(req, res) {
 
     db_hometime.saveVideoInfo(body.dbUrl, body.video);
 
-    // if (true)
     res.sendStatus(200); // OK
-    // else
-    // res.sendStatus(403);
 });
 
 app.post('/m/generate', function(req, res) {
@@ -87,13 +100,13 @@ app.post('/m/generate', function(req, res) {
 
 // ************* CHROMECAST SENDER APP *************
 
-// load sender app beginer infomation
-var db_sender_app = new JsonDB('./db/sender_app', true, true).getData('/');
-
 app.use(express.static(__dirname + '/hometime'));
 
 // load chromecast sender app beginer data
 app.get('/app', function(req, res) {
+
+    // load sender app beginer infomation
+    var db_sender_app = new JsonDB('./db/sender_app', true, true).getData('/');
 
     res.json(db_sender_app);
 });

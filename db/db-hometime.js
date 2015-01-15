@@ -4,7 +4,8 @@ var fs = require('fs'),
     path = require('path'),
     JsonDB = require('node-json-db'),
     randomstring = require("randomstring"),
-    ffmpeg = require('fluent-ffmpeg');
+    ffmpeg = require('fluent-ffmpeg'),
+    md5 = require('MD5');
 
 // second argument <=> auto save after push || if false we have to call .save()
 // thirt argument <=> readable format.
@@ -58,7 +59,6 @@ var dirTree = function(filename, res) {
     }
 };
 
-
 var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
 
     var indexedNameEts = indexedPrefix + randomstring.generate() + fileType; // ex: _ytRANDOMSTRING.mp4
@@ -94,8 +94,6 @@ var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
 
     return db_source;
 };
-
-
 
 module.exports = {
 
@@ -188,7 +186,38 @@ module.exports = {
         });
     },
 
-    getUser: function(uname, password) {
+    loginManager: function(email, pwd, callback) {
 
+        var user_db = new JsonDB(__dirname + '/users', false, true);
+
+        try {
+            var md5pwd = md5(pwd);
+
+            var user = user_db.getData('/managers/' + email);
+
+            if (md5pwd === user.password) {
+
+                var u = {
+                    name: user.name,
+                    avatar: user.avatar
+                };
+
+                callback(null, u);
+
+            } else {
+
+                callback('wrong password', null);
+            }
+
+        } catch (error) {
+
+            if (error)
+
+                callback('not exists', null);
+            else {
+
+                console.log(user);
+            }
+        }
     }
 };
