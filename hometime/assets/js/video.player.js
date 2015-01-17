@@ -397,6 +397,8 @@ Polymer('video-player', {
 
     ready: function() {
 
+        window._self = this;
+
         this.checkInitialize();
 
     },

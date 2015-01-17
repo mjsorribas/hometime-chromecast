@@ -19,7 +19,7 @@
 <link rel="import" href="../bower_components/core-drawer-panel/core-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 
 <!-- my components -->
 <link rel="import" href="../components/video-item.html">
@@ -52,9 +52,13 @@
                     </template>
                 </core-selector>
                 <core-menu class="user-nav">
-                    <!-- <paper-item icon="account-circle" label="Login"></paper-item> -->
-                    <!-- <paper-item icon="account-circle" label="Account"></paper-item> -->
-                    <paper-item icon="send-money" label="Sign Out"></paper-item>
+                    <template if="{{!loggedIn}}">
+                        <paper-item icon="account-circle" label="Login" on-tap="{{toggleLogin}}"></paper-item>
+                    </template>
+                    <template if="{{loggedIn}}">
+                        <paper-item icon="account-circle" label="Account"></paper-item>
+                        <paper-item icon="send-money" label="Sign Out" on-tap="{{logout}}"></paper-item>
+                    </template>
                 </core-menu>
             </core-header-panel>
 
@@ -121,10 +125,37 @@
             </div>
 
         </core-scaffold>
+        <!-- login -->
+        <div id="login_main" hidden cross-fade-delayed class="login-main">
+            <div class="bg" fit dummy cross-fade>
+                <paper-fab class="btn-close-login" icon="close" on-tap="{{toggleLogin}}"></paper-fab>
+            </div>
+            <div class="main" layout vertical slide-up-offscreen>
+                <div class="header">Sign In</div>
+                <div class="message"><small>{{loginMessage}}</small>
+                </div>
+                <paper-input label="Email" id="u_email" type="email" class="w-100"></paper-input>
+                <paper-input label="Password" id="u_password" type="password" class="w-100"></paper-input>
+                <div horizontal center layout>
+                    <div flex></div>
+                    <paper-fab id="login_check" class="login-check" icon="check" showing?="{{$.u_email.value.length && $.u_password.value.length}}" on-tap="{{login}}"></paper-fab>
+                </div>
+            </div>
+            <!-- post ajax login -->
+            <core-ajax contentType="application/json" id="ajax_login" method="POST" url="/login" on-core-response="{{handleLogin}}">
+            </core-ajax>
+        </div>
+
+        <!-- user cookie -->
+        <polymer-cookie id="cookie_user" name="cookieUser"></polymer-cookie>
     </template>
 
     <script>
     Polymer("main-screen", {
+
+        loggedIn: false,
+
+        loginMessage: '',
 
         modes: ["waterfall-tall", "seamed"],
 
@@ -144,6 +175,10 @@
         ready: function() {
 
             var self = this;
+
+            window.__self = this;
+
+            this.loggedIn = this.$.cookie_user.isCookieStored();
 
             this.lister = this.$.lister;
 
@@ -205,6 +240,46 @@
             window.onclose = savePlayingData;
 
             window.onbeforeunload = savePlayingData;
+        },
+
+        toggleLogin: function() {
+            this.$.login_main.hidden = !this.$.login_main.hidden;
+        },
+
+        logout: function() {
+            this.$.cookie_user.deleteCookie();
+            this.loggedIn = false;
+            this.toggleLogin();
+        },
+
+        login: function() {
+
+            var data = {
+                email: this.$.u_email.value,
+                password: this.$.u_password.value
+            };
+
+            this.$.ajax_login.body = JSON.stringify(data);
+            this.$.ajax_login.go();
+        },
+
+        handleLogin: function(e) {
+
+            var res = JSON.parse(e.detail.response);
+
+            if (res.error) {
+                this.loginMessage = 'Email or password you entered is incorrect';
+                this.$.login_main.hidden = false;
+                this.$.cookie_user.deleteCookie();
+                this.$.loggedIn = false;
+
+            } else if (res.user) {
+                var cookie = this.$.cookie_user;
+                cookie.value = res.user.email;
+                cookie.save();
+                this.loggedIn = true;
+                this.$.login_main.hidden = true;
+            }
         },
 
         gotoList: function() {

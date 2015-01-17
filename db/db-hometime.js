@@ -186,6 +186,41 @@ module.exports = {
         });
     },
 
+    loginUser: function(email, pwd, callback) {
+
+        var user_db = new JsonDB(__dirname + '/users', false, true);
+
+        try {
+            var md5pwd = md5(pwd);
+
+            var user = user_db.getData('/users/' + email);
+
+            if (md5pwd === user.password) {
+
+                var u = {
+                    name: user.name,
+                    avatar: user.avatar
+                };
+
+                callback(null, u);
+
+            } else {
+
+                callback('wrong password', null);
+            }
+
+        } catch (error) {
+
+            if (error)
+
+                callback('not exists', null);
+            else {
+
+                console.log(user);
+            }
+        }
+    },
+
     loginManager: function(email, pwd, callback) {
 
         var user_db = new JsonDB(__dirname + '/users', false, true);

@@ -1,14 +1,21 @@
 {
   "managers": {
-    "toan@hometime.com": {
+    "toan@ht.com": {
       "name": "Toan",
-      "password": "e10adc3949ba59abbe56e057f20f883e",
+      "password": "a8f5f167f44f4964e6c998dee827110c",
       "avatar": "/media/avatars/toan-hometime.com.jpg"
     },
-    "nguyen@hometime.com": {
+    "nguyen@ht.com": {
       "name": "Nguyen",
-      "password": "e10adc3949ba59abbe56e057f20f883e",
+      "password": "a8f5f167f44f4964e6c998dee827110c",
       "avatar": "/media/avatars/nguyen-hometime.com.jpg"
+    }
+  },
+  "users": {
+    "toan@ht.com": {
+      "name": "Toan",
+      "password": "a8f5f167f44f4964e6c998dee827110c",
+      "avatar": "/media/avatars/toan-hometime.com.jpg"
     }
   }
 }

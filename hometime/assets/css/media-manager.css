@@ -18,12 +18,18 @@ core-scaffold /deep/ .hide-overflow {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+core-scaffold core-header-panel {
+    color: #607D8B;
+}
 core-scaffold core-header-panel core-toolbar {
     background-color: #78909C;
     color: #fff;
 }
 core-scaffold /deep/ #headerPanel core-toolbar {
     background-color: #607D8B;
+}
+.back-sender-app {
+    color: #FF6B00;
 }
 .menu /deep/ core-icon {
     color: #607D8B;
@@ -60,6 +66,7 @@ paper-spinner {
     font-weight: 600;
 }
 /* login */
+
 .login-main {
     font-size: 20px;
 }

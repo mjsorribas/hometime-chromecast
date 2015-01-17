@@ -57,14 +57,17 @@
                 <core-toolbar>
                     <span flex class="menu-title">Select a library</span>
                 </core-toolbar>
-                <core-selector id="menu" class="menu" selected="{{currentList}}" on-core-select="{{}}">
+                <a href="/">
+                    <paper-item class="back-sender-app" icon="arrow-back" label="Sender app"></paper-item>
+                </a>
+                <core-selector id="menu" class="menu" selected="{{currentList}}">
                     <template repeat="{{l, index in data.library}}">
                         <paper-item label="{{l.label}}" icon="{{l.icon}}">
                             <core-ajax url="{{l.dataUrl}}" auto handleAs="json" response="{{allVideos[index]}}" on-core-response="{{parse}}"></core-ajax>
                         </paper-item>
                     </template>
-                    <paper-item icon="send-money" label="Sign Out" on-tap="{{logout}}"></paper-item>
                 </core-selector>
+                <paper-item icon="send-money" label="Sign Out" on-tap="{{logout}}"></paper-item>
             </core-header-panel>
 
 
@@ -101,8 +104,8 @@
                     <section>
                         <div cross-fade layout vertical>
                             <section class="padding-10 header">
-                                <h2>
-                                Scan new media files in <b>{{data.library[currentList].label}}</b>
+                                <h2 style="font-weight: 300; ">
+                                Scan for new media in <b>{{data.library[currentList].label}}</b>
                                 <paper-spinner id="scan_spinner"></paper-spinner>
                             </h2>
                                 <!-- ajax get to scan new media files -->
@@ -121,7 +124,7 @@
                                                 <strong>File path: </strong> {{v.ori}}
                                             </div>
                                             <div>
-                                                <strong>Indexed: </strong><a target="_blank" href="/media/{{v.indexed}}?V" title="">{{v.indexed}}</a>
+                                                <strong>Indexed: </strong><a target="_blank" href="/media{{v.indexed}}?V" title="">{{v.indexed}}</a>
                                             </div>
                                         </div>
                                         <paper-shadow z="1"></paper-shadow>
@@ -145,10 +148,12 @@
             <!-- place all overlay styles inside the overlay target -->
             <style no-shim>
             .dialog {
+                font-family: 'Open Sans', sans-serif;
+                font-size: 14px;
+                font-weight: 300;
+                color: #777;
                 box-sizing: border-box;
                 -moz-box-sizing: border-box;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 13px;
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 overflow: hidden;
@@ -182,7 +187,7 @@
                 <div layout horizontal>
                     <div flex>
                         <paper-input value="" label="First Name" id="input_title" class="w-100"></paper-input>
-                        <paper-input value="" label="Video description" id="input_description" maxlength="255" class="w-100" multiline></paper-input>
+                        <paper-input value="" label="Video description" id="input_description" maxlength="128" class="w-100" multiline></paper-input>
                     </div>
                     <div>
                         <paper-spinner id="edit_spinner"></paper-spinner>

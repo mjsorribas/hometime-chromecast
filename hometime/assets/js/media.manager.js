@@ -12,11 +12,11 @@ Polymer("media-manager", {
 
     loggedIn: false,
 
+    loginMessage: '',
+
     totalResponse: 0,
 
     dialogMessage: 'Hi there!',
-
-    loginMessage: '',
 
     targetVideo: {
         libIndex: 0,
@@ -88,7 +88,7 @@ Polymer("media-manager", {
             this.dialogMessage = 'No new media files in: ' + this.data.library[this.currentList].label;
         } else {
             this.$.scan_dialog.style.backgroundColor = '#DCEDC8';
-            this.dialogMessage = 'Found ' + res.length + ' media file(s) in: ' + this.data.library[this.currentList].label;
+            this.dialogMessage = 'Found and Imported ' + res.length + ' media file(s) to: ' + this.data.library[this.currentList].label;
         }
 
         this.$.scan_dialog.toggle();
@@ -177,7 +177,7 @@ Polymer("media-manager", {
 
         var self = this;
 
-        window.self = self;
+        window._self = this;
 
         this.lister = this.$.lister;
 

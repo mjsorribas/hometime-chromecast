@@ -124,6 +124,22 @@ app.get('/library/*', function(req, res) {
     res.json(videos);
 });
 
+// user login
+app.post('/login', function(req, res) {
+
+    var body = req.body;
+
+    db_hometime.loginUser(body.email, body.password, function(err, user) {
+
+        var resdata = {
+            error: err,
+            user: user
+        };
+
+        res.json(resdata);
+    });
+});
+
 // RUN SERVER
 
 app.listen(3000);
