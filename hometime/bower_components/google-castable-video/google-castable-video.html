@@ -230,6 +230,7 @@ Instead of listening for the video element's `timeupdate` event please listen fo
             this.synchronizeMedia(true);
             // If video was playing on the receiver start playing locally.
             if (this._castMedia.playerState === 'PLAYING') {
+              console.log('play on local');
               this.play();
             }
             this._castMedia = null;

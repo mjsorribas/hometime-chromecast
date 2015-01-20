@@ -44,6 +44,8 @@ Polymer('video-player', {
 
     currentSTimeFormated: '00:00:00',
 
+    volume: 0.8,
+
     volumeStateIcons: {
 
         mute: 'av:volume-off',
@@ -79,6 +81,8 @@ Polymer('video-player', {
 
         var volumer = this.$.volumer;
 
+        vid.volume = this.volume;
+
         self.initializedController = true;
 
         self.isFullscreen = false;
@@ -90,8 +94,6 @@ Polymer('video-player', {
         vid.isPlayOnTV = false;
 
         progressSlider.value = 0;
-
-        volumer.value = vid.volume;
 
         volumer.isShowing = false;
 
@@ -126,11 +128,13 @@ Polymer('video-player', {
                     } else if (self.currentplayState) {
 
                         self.currentplayState = 0;
+                        console.log('pause');
                     }
 
                 } else if (!self.currentplayState) {
 
                     self.currentplayState = 1;
+                    console.log('play');
                 }
             }
         });
@@ -281,7 +285,6 @@ Polymer('video-player', {
         var handleStartSlide = function() {
 
             progressSlider.isMousedown = true;
-
         };
 
         var handleStopSlide = function() {
@@ -306,7 +309,7 @@ Polymer('video-player', {
         // volume
         volumer.addEventListener('core-change', function() {
 
-            vid.volume = volumer.value;
+            vid.volume = self.volume;
 
             if (volumer.value === 0) {
 
