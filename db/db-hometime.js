@@ -70,27 +70,28 @@ var autoGenAndRename = function(filename, title, dirname, fileType, atime) {
 
     var db_source = newFullname.replace(path.join(__dirname, '../media'), '').replace(fileType, '');
 
-    // fs.rename(filename, newFullname, function(err) {
+    fs.rename(filename, newFullname, function(err) {
 
-    //     if (err) {
-    //         // retry rename
-    //         console.log(err);
-    //         autoGenAndRename(filename, title, dirname, fileType, atime);
+        if (err) {
+            // retry rename
+            console.log(err);
+            autoGenAndRename(filename, title, dirname, fileType, atime);
 
-    //     } else {
+        } else {
 
-    //         var media = {
-    //             'title': title,
-    //             'fileType': fileType,
-    //             'mediaType': mimeTypes[fileType],
-    //             'description': '',
-    //             'addTime': atime
-    //         };
-    //         // save to db
-    //         // the last argument <=> overwrite
-    //         media_db.push(db_source, media, false);
-    //     }
-    // });
+            var media = {
+                'title': title,
+                'fileType': fileType,
+                'mediaType': mimeTypes[fileType],
+                'poster': '_1.jpg',
+                'description': '',
+                'addTime': atime
+            };
+            // save to db
+            // the last argument <=> overwrite
+            media_db.push(db_source, media, false);
+        }
+    });
 
     return db_source;
 };

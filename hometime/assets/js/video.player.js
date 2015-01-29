@@ -322,7 +322,6 @@ Polymer('video-player', {
             } else {
 
                 self.$.volume_icon.icon = self.volumeStateIcons.up;
-
             }
         });
 
